@@ -30,12 +30,20 @@ console.log(isPalyndrom('Лёша на полке клопа нашёл ')); // 
 
 function extractNumbers(checkString) {
   let result = '';
+  checkString = String(checkString);
   for (i = 0; i <= (checkString.length - 1); i++) {
-    if (Number.isNaN(checkString[i])) {
+    if (Number(checkString[i]) || checkString[i] === '0') {
       result += checkString[i];
     }
   }
-  return result;
+  return Math.round(result);
 }
 
 console.log(extractNumbers('2023 год'));
+console.log(extractNumbers('ECMAScript 2022'));
+console.log(extractNumbers('1 кефир, 0.5 батона'));
+console.log(extractNumbers('агент 007'));
+console.log(extractNumbers('а я томат'));
+console.log(extractNumbers(2023));
+console.log(extractNumbers(-1));
+console.log(extractNumbers(1.5));
