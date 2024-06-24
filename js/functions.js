@@ -36,7 +36,7 @@ function extractNumbers(checkString) {
       result += checkString[i];
     }
   }
-  return Math.round(result);
+  return result === '' ? NaN : Math.round(result);
 }
 
 console.log(extractNumbers('2023 год'));
