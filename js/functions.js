@@ -9,6 +9,7 @@ console.log(checkLength('asgdjfhgasdjh', 30)); // true, то есть меньш
 // функция проверяет является ли введеная строка checkString палиндромом
 function isPalyndrom(checkString) {
   let newString = '';
+  let outputString = checkString;
   checkString = checkString.replaceAll(' ', '');
   checkString = checkString.toUpperCase();
 
@@ -17,9 +18,9 @@ function isPalyndrom(checkString) {
   }
 
   if (newString === checkString) {
-    return 'Это палиндром';
+    return outputString + ' - это палиндром';
   } else {
-    return 'Это не палиндром';
+    return outputString + ' - это не палиндром';
   }
 }
 
