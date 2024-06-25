@@ -12,7 +12,7 @@ function isPalyndrom(checkString) {
   checkString = checkString.replaceAll(' ', '');
   checkString = checkString.toUpperCase();
 
-  for (i = checkString.length - 1; i>=0; i--) {
+  for (i = checkString.length - 1; i >= 0; i--) {
     newString += checkString[i];
   }
 
