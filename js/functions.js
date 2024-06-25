@@ -9,19 +9,12 @@ console.log(checkLength('asgdjfhgasdjh', 30)); // true, то есть меньш
 // функция проверяет является ли введеная строка checkString палиндромом
 function isPalyndrom(checkString) {
   let newString = '';
-  let outputString = checkString;
-  checkString = checkString.replaceAll(' ', '');
-  checkString = checkString.toUpperCase();
+  checkString = checkString.replaceAll(' ', '').toUpperCase();
 
-  for (i = checkString.length - 1; i >= 0; i--) {
+  for (let i = checkString.length - 1; i >= 0; i--) {
     newString += checkString[i];
   }
-
-  if (newString === checkString) {
-    return outputString + ' - это палиндром';
-  } else {
-    return outputString + ' - это не палиндром';
-  }
+  return (newString === checkString);
 }
 
 console.log(isPalyndrom('Кекс')); // не палиндром
@@ -32,12 +25,12 @@ console.log(isPalyndrom('Лёша на полке клопа нашёл ')); // 
 function extractNumbers(checkString) {
   let result = '';
   checkString = String(checkString);
-  for (i = 0; i <= (checkString.length - 1); i++) {
-    if (Number(checkString[i]) || checkString[i] === '0') {
+  for (let i = 0; i <= (checkString.length - 1); i++) {
+    if (!Number.isNaN(parseInt(checkString[i], 10))) {
       result += checkString[i];
     }
   }
-  return result === '' ? NaN : Math.round(result);
+  return result === '' ? NaN : parseInt(result, 10);
 }
 
 console.log(extractNumbers('2023 год'));
