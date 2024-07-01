@@ -1,4 +1,4 @@
-const POST_DESCRIPTIONS = [
+const POST_DESCRIPTIONS = [ // массив описаний к постам
   'Возле живописного озера сидит девушка, читающая книгу',
   'Группа друзей весело отдыхает на пляже, играя в волейбол',
   'Мягкий свет заката освещает уютный домик в лесу',
@@ -26,7 +26,7 @@ const POST_DESCRIPTIONS = [
   'Рыцарь в доспехах стоит на страже средневекового замка'
 ];
 
-const MESSAGES = [
+const MESSAGES = [ // массив для выборки комментариев
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -35,7 +35,7 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const NAMES = [
+const NAMES = [ // массив для выборки имен
   'Андрей',
   'Вован',
   'Петя',
@@ -49,10 +49,15 @@ const NAMES = [
   'Игорь'
 ];
 
-const MAX_COMMENTS_NUMBER = 30;
-const POSTS_NUMBER = 25;
+const MAX_COMMENTS_NUMBER = 30; // максимальное число комментариев
+const POSTS_NUMBER = 25; // количество постов
+const orderedPostId = createOrderedIdGenerator(); // генерируем id для постов
+const orderedPostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
+const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
+const orderedPostUrl = createOrderedIdGenerator(); // генерируем url постов
+const randomPostLikes = createRandomIdFromRangeGenerator(15, 200); // генерируем случайное число лайков
 
-const getRandomInteger = (min, max) => {
+const getRandomInteger = (min, max) => { // функция генерации случайного целого числа из диапазона
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
@@ -60,13 +65,13 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-function createRandomIdFromRangeGenerator (min, max) {
+function createRandomIdFromRangeGenerator (min, max) { // функция генерации неповторяющихся целых чисел из диапазона
   const previousValues = [];
 
   return function () {
     let currentValue = getRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      console.error('Превышен диапозон');
+      return null;
     }
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomInteger(min, max);
@@ -76,39 +81,33 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
+function createOrderedIdGenerator () { // функция генерации последовательных id
+  let lastOrderedId = 0;
 
-const createPost = () => {
-  const randomPostId = createRandomIdFromRangeGenerator(1, 25);
-  const randomPostUrl = createRandomIdFromRangeGenerator(1, 25);
-  const randomPostLikes = createRandomIdFromRangeGenerator(15, 200);
-
-  const getRandomArrayElement = (elements) => {
-    const indexElement = createRandomIdFromRangeGenerator(0, elements.length - 1);
-    return elements[indexElement()];
+  return function () {
+    lastOrderedId += 1;
+    return lastOrderedId;
   };
+}
 
-  const createPostComments = () => {
-    const randomPostCommentsId = createRandomIdFromRangeGenerator(0, 30);
-    const randomPostCommentsAvatar = createRandomIdFromRangeGenerator(1, 6);
-
-    return {
-      id: randomPostCommentsId(),
-      avatar: `img/avatar-${randomPostCommentsAvatar()}.svg`,
-      message: getRandomArrayElement(MESSAGES),
-      name: getRandomArrayElement(NAMES)
-    };
-  };
-
-  const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER);
-
-  return {
-    id: randomPostId(),
-    url: `photos/${ randomPostUrl() }.jpg`,
-    description: getRandomArrayElement(POST_DESCRIPTIONS),
-    likes: randomPostLikes(),
-    comments: Array.from({length: getCommentsNumber()}, createPostComments),
-  };
+const getRandomArrayElement = (elements) => {
+  const indexElement = createRandomIdFromRangeGenerator(0, elements.length - 1);
+  return elements[indexElement()];
 };
 
+const createPostComments = () => ({ // функция создания комментария
+  id: orderedPostCommentsId(),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: getRandomArrayElement(MESSAGES),
+  name: getRandomArrayElement(NAMES)
+});
+
+const createPost = () => ({ // функция создания поста
+  id: orderedPostId(),
+  url: `photos/${ orderedPostUrl() }.jpg`,
+  description: getRandomArrayElement(POST_DESCRIPTIONS),
+  likes: randomPostLikes(),
+  comments: Array.from({length: getCommentsNumber()}, createPostComments),
+});
+
 const posts = Array.from({length: POSTS_NUMBER}, createPost);
-console.log(posts[10]);
