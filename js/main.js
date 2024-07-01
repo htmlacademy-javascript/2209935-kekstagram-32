@@ -52,7 +52,6 @@ const NAMES = [ // массив для выборки имен
 const MAX_COMMENTS_NUMBER = 30; // максимальное число комментариев
 const POSTS_NUMBER = 25; // количество постов
 const orderedPostId = createOrderedIdGenerator(); // генерируем id для постов
-const orderedPostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
 const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
 const orderedPostUrl = createOrderedIdGenerator(); // генерируем url постов
 const randomPostLikes = createRandomIdFromRangeGenerator(15, 200); // генерируем случайное число лайков
@@ -95,19 +94,24 @@ const getRandomArrayElement = (elements) => {
   return elements[indexElement()];
 };
 
-const createPostComments = () => ({ // функция создания комментария
-  id: orderedPostCommentsId(),
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES)
-});
+const createPost = () => { // функция создания поста
+  const orderedPostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
 
-const createPost = () => ({ // функция создания поста
-  id: orderedPostId(),
-  url: `photos/${ orderedPostUrl() }.jpg`,
-  description: getRandomArrayElement(POST_DESCRIPTIONS),
-  likes: randomPostLikes(),
-  comments: Array.from({length: getCommentsNumber()}, createPostComments),
-});
+  const createPostComments = () => ({ // функция создания комментария
+    id: orderedPostCommentsId(),
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES)
+  });
+
+  return {
+    id: orderedPostId(),
+    url: `photos/${ orderedPostUrl() }.jpg`,
+    description: getRandomArrayElement(POST_DESCRIPTIONS),
+    likes: randomPostLikes(),
+    comments: Array.from({length: getCommentsNumber()}, createPostComments),
+  };
+};
 
 const posts = Array.from({length: POSTS_NUMBER}, createPost);
+console.log(posts[10]);
