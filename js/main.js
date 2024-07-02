@@ -114,4 +114,3 @@ const createPost = () => { // функция создания поста
 };
 
 const posts = Array.from({length: POSTS_NUMBER}, createPost);
-console.log(posts[10]);
