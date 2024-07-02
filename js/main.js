@@ -51,10 +51,6 @@ const NAMES = [ // массив для выборки имен
 
 const MAX_COMMENTS_NUMBER = 30; // максимальное число комментариев
 const POSTS_NUMBER = 25; // количество постов
-const orderedPostId = createOrderedIdGenerator(); // генерируем id для постов
-const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
-const orderedPostUrl = createOrderedIdGenerator(); // генерируем url постов
-const randomPostLikes = createRandomIdFromRangeGenerator(15, 200); // генерируем случайное число лайков
 
 const getRandomInteger = (min, max) => { // функция генерации случайного целого числа из диапазона
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -94,23 +90,25 @@ const getRandomArrayElement = (elements) => {
   return elements[indexElement()];
 };
 
+const generatePostId = createOrderedIdGenerator(); // генерируем id для постов
+const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
+
+const createPostComments = (id) => ({ // функция создания комментария
+  id,
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: getRandomArrayElement(MESSAGES),
+  name: getRandomArrayElement(NAMES)
+});
+
 const createPost = () => { // функция создания поста
-  const orderedPostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
-
-  const createPostComments = () => ({ // функция создания комментария
-    id: orderedPostCommentsId(),
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: getRandomArrayElement(MESSAGES),
-    name: getRandomArrayElement(NAMES)
-  });
-
+  const generatePostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
+  const universePostId = generatePostId();
   return {
-    id: orderedPostId(),
-    url: `photos/${ orderedPostUrl() }.jpg`,
+    id: universePostId,
+    url: `photos/${ universePostId }.jpg`,
     description: getRandomArrayElement(POST_DESCRIPTIONS),
-    likes: randomPostLikes(),
-    comments: Array.from({length: getCommentsNumber()}, createPostComments),
+    likes: getRandomInteger(15, 200),
+    comments: Array.from({length: getCommentsNumber()}, () => createPostComments(generatePostCommentsId())),
   };
 };
-
 const posts = Array.from({length: POSTS_NUMBER}, createPost);
