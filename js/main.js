@@ -86,8 +86,8 @@ function createOrderedIdGenerator () { // функция генерации по
 }
 
 const getRandomArrayElement = (elements) => {
-  const indexElement = createRandomIdFromRangeGenerator(0, elements.length - 1);
-  return elements[indexElement()];
+  const indexElement = getRandomInteger(0, elements.length - 1);
+  return elements[indexElement];
 };
 
 const generatePostId = createOrderedIdGenerator(); // генерируем id для постов
@@ -106,9 +106,10 @@ const createPost = () => { // функция создания поста
   return {
     id: universePostId,
     url: `photos/${ universePostId }.jpg`,
-    description: getRandomArrayElement(POST_DESCRIPTIONS),
+    description: createRandomIdFromRangeGenerator(0, POST_DESCRIPTIONS.length - 1),
     likes: getRandomInteger(15, 200),
     comments: Array.from({length: getCommentsNumber()}, () => createPostComments(generatePostCommentsId())),
   };
 };
 const posts = Array.from({length: POSTS_NUMBER}, createPost);
+
