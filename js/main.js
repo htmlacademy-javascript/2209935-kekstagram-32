@@ -91,7 +91,6 @@ const getRandomArrayElement = (elements) => {
 };
 
 const generatePostId = createOrderedIdGenerator(); // генерируем id для постов
-const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
 
 const createPostComments = (id) => ({ // функция создания комментария
   id,
@@ -107,7 +106,7 @@ const createPost = (id) => { // функция создания поста
     url: `photos/${ id }.jpg`,
     description: createRandomIdFromRangeGenerator(0, POST_DESCRIPTIONS.length - 1),
     likes: getRandomInteger(15, 200),
-    comments: Array.from({length: getCommentsNumber()}, () => createPostComments(generatePostCommentsId())),
+    comments: Array.from({length: getRandomInteger(0, MAX_COMMENTS_NUMBER)}, () => createPostComments(generatePostCommentsId())),
   };
 };
 const posts = Array.from({length: POSTS_NUMBER}, () => createPost(generatePostId()));
