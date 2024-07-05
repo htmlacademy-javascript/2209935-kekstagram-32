@@ -110,5 +110,4 @@ const createPost = (id) => { // функция создания поста
   };
 };
 const posts = Array.from({length: POSTS_NUMBER}, () => createPost(generatePostId()));
-const posts_2 = Array.from({length: POSTS_NUMBER}, () => createPost(generatePostId()));
 
