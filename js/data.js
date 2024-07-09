@@ -1,7 +1,4 @@
-import { getRandomInteger } from "./get-random-integer";
-import { createRandomIdFromRangeGenerator } from "./create-random-from-range";
-import { createOrderedIdGenerator } from "./create-ordered-id-generator";
-import { getRandomArrayElement } from "./get-random-array-element";
+import { getRandomInteger, createRandomIdFromRangeGenerator, createOrderedIdGenerator, getRandomArrayElement } from './utils.js';
 
 const POST_DESCRIPTIONS = [ // массив описаний к постам
   'Возле живописного озера сидит девушка, читающая книгу',
