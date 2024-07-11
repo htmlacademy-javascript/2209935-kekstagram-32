@@ -5,6 +5,8 @@ function checkLength(string, length) {
 
 // console.log(checkLength('asgdjfhgasdjh', 4)); // fasle, то есть не меньше
 // console.log(checkLength('asgdjfhgasdjh', 30)); // true, то есть меньше
+// console.log(checkLength('asgdjfhgasdjh', 4)); // fasle, то есть не меньше
+// console.log(checkLength('asgdjfhgasdjh', 30)); // true, то есть меньше
 
 // функция проверяет является ли введеная строка checkString палиндромом
 function isPalyndrom(checkString) {
@@ -17,6 +19,10 @@ function isPalyndrom(checkString) {
   return (newString === checkString);
 }
 
+// console.log(isPalyndrom('Кекс')); // не палиндром
+// console.log(isPalyndrom('топот')); // палиндром
+// console.log(isPalyndrom('ДовОд')); // палиндром
+// console.log(isPalyndrom('Лёша на полке клопа нашёл ')); // палиндром
 // console.log(isPalyndrom('Кекс')); // не палиндром
 // console.log(isPalyndrom('топот')); // палиндром
 // console.log(isPalyndrom('ДовОд')); // палиндром
@@ -42,3 +48,63 @@ function extractNumbers(checkString) {
 // console.log(extractNumbers(-1));
 // console.log(extractNumbers(1.5));
 
+// задание "Функции возвращаются"
+
+function checkCorrectEnter (stringTime) { // функция проверяет корректность введеного времени
+  if (/^[0-2]?[0-9]{1}:[0-9]{1}[0-9]?$/.test(stringTime)) {
+    const timeArray = stringTime.split(':');
+    if (timeArray[0] > 23) {
+      return null;
+    }
+    if (timeArray[1] > 59) {
+      return null;
+    } else {
+      return timeArray;
+    }
+  } else {
+    return null;
+  }
+}
+
+function timeToMinutes (fullTime) {
+  return (+fullTime[0] * 60 + +fullTime[1]);
+}
+
+function isMeetingInWorkTime (beginWorkingDay, endWorkingDay, beginMeeting, meetingDuration) { // основная функция проверки
+
+  const beginWorkingDayTime = checkCorrectEnter(beginWorkingDay);
+  if (!beginWorkingDayTime) {
+    return console.log('Некорректный формат времени');
+  }
+
+  const endWorkingDayTime = checkCorrectEnter(endWorkingDay);
+  if (!endWorkingDayTime) {
+    return console.log('Некорректный формат времени');
+  }
+
+  const beginMeetingTime = checkCorrectEnter(beginMeeting);
+  if (!beginMeetingTime) {
+    return console.log('Некорректный формат времени');
+  }
+
+  const beginWorkingDayMinutes = timeToMinutes(beginWorkingDayTime);
+  const endWorkingDayMinutes = timeToMinutes(endWorkingDayTime);
+  const beginMeetingMinutes = timeToMinutes(beginMeetingTime);
+
+
+  if (beginMeetingMinutes >= beginWorkingDayMinutes && (beginMeetingMinutes + meetingDuration) <= endWorkingDayMinutes) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+console.log(isMeetingInWorkTime('08:00', '17:30', '14:00', 90)); // true
+console.log(isMeetingInWorkTime('8:0', '10:0', '8:0', 120)); // true
+console.log(isMeetingInWorkTime('08:00', '14:30', '14:00', 90)); // false
+console.log(isMeetingInWorkTime('14:00', '17:30', '08:0', 90)); // false
+console.log(isMeetingInWorkTime('8:00', '17:30', '08:00', 900)); // false
+
+console.log(isMeetingInWorkTime('88:0', '16:0', '15:30', 31)); // Некорректный формат времени
+console.log(isMeetingInWorkTime('8:fgf', '16:0', '15:30', 31)); // Некорректный формат времени
