@@ -60,24 +60,24 @@ function checkCorrectEnter (stringTime) { // функция проверяет �
   }
 }
 
+function timeToMinutes (fullTime) {
+  return (+fullTime[0] * 60 + +fullTime[1]);
+}
+
 function isMeetingInWorkTime (beginWorkingDay, endWorkingDay, beginMeeting, meetingDuration) { // основная функция проверки
 
-  function timeToMinutes (fullTime) {
-    return (+fullTime[0] * 60 + +fullTime[1]);
-  }
-
   const beginWorkingDayTime = checkCorrectEnter(beginWorkingDay);
-  if (beginWorkingDayTime === null) {
+  if (!beginWorkingDayTime) {
     return console.log('Некорректный формат времени');
   }
 
   const endWorkingDayTime = checkCorrectEnter(endWorkingDay);
-  if (endWorkingDayTime === null) {
+  if (!endWorkingDayTime) {
     return console.log('Некорректный формат времени');
   }
 
   const beginMeetingTime = checkCorrectEnter(beginMeeting);
-  if (beginMeetingTime === null) {
+  if (!beginMeetingTime) {
     return console.log('Некорректный формат времени');
   }
 
