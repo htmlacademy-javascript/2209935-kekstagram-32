@@ -36,7 +36,4 @@ const getRandomArrayElement = (elements) => {
   return elements[indexElement()];
 };
 
-export{getRandomInteger};
-export{getRandomArrayElement};
-export{createOrderedIdGenerator};
-export{createRandomIdFromRangeGenerator};
+export{getRandomInteger, getRandomArrayElement, createOrderedIdGenerator, createRandomIdFromRangeGenerator};
