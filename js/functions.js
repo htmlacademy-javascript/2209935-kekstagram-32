@@ -5,6 +5,8 @@ function checkLength(string, length) {
 
 // console.log(checkLength('asgdjfhgasdjh', 4)); // fasle, то есть не меньше
 // console.log(checkLength('asgdjfhgasdjh', 30)); // true, то есть меньше
+// console.log(checkLength('asgdjfhgasdjh', 4)); // fasle, то есть не меньше
+// console.log(checkLength('asgdjfhgasdjh', 30)); // true, то есть меньше
 
 // функция проверяет является ли введеная строка checkString палиндромом
 function isPalyndrom(checkString) {
@@ -17,6 +19,10 @@ function isPalyndrom(checkString) {
   return (newString === checkString);
 }
 
+// console.log(isPalyndrom('Кекс')); // не палиндром
+// console.log(isPalyndrom('топот')); // палиндром
+// console.log(isPalyndrom('ДовОд')); // палиндром
+// console.log(isPalyndrom('Лёша на полке клопа нашёл ')); // палиндром
 // console.log(isPalyndrom('Кекс')); // не палиндром
 // console.log(isPalyndrom('топот')); // палиндром
 // console.log(isPalyndrom('ДовОд')); // палиндром
