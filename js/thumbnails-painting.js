@@ -18,3 +18,5 @@ posts.forEach(({url, description, likes, comments}) => {
 });
 
 picturesContainer.appendChild(postsFragment);
+
+export {posts};
