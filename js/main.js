@@ -1,1 +1,1 @@
-import './painting.js';
+import './thumbnails-painting.js';
