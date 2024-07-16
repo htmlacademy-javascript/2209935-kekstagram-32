@@ -1,3 +1,1 @@
-import { createPosts } from './data.js';
-
-console.log(createPosts());
+import './thumbnails-painting.js';
