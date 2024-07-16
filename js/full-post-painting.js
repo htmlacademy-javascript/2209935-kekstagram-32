@@ -1,7 +1,6 @@
-import { posts } from './thumbnails-painting.js';
-import { isPressedKeyEscape } from './utils.js';
+import { isPressedKeyEscape } from './utils.js'; // импортируем функцию проверки нажата ли клавиша ESC
 
-const thumbnails = document.querySelectorAll('.picture');
+// записываем в переменные необходимые узлы DOM
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
@@ -14,56 +13,63 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
-const onPostCloseButtonKeydown = (evt) => { // функция обработки закрытия поста клавишей esc
+// функция обработки закрытия поста клавишей esc
+const onPostCloseButtonKeydown = (evt) => {
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
     closePost();
   }
 };
 
-const onPostCloseButtonClick = (evt) => { // функция обработки закрытия поста кнопкой крестиком
+// функция обработки закрытия поста кнопкой крестиком
+const onPostCloseButtonClick = (evt) => {
   evt.preventDefault();
   closePost();
 };
 
-function closePost () { // функция закрытия окна поста
+// функция закрытия окна поста
+function closePost () {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPostCloseButtonKeydown);
   bigPictureCloseButton.removeEventListener('click', onPostCloseButtonClick);
 }
 
-const onThumbnailClick = (thumbnail, bigPhoto, likes, comments, description) => { // функция отрисовки поста при клике
-  thumbnail.addEventListener('click', () => {
-
-    const commentFragment = document.createDocumentFragment();
-    bigPictureImage.src = bigPhoto;
-    postDescription.textContent = description;
-    likesCount.textContent = likes;
-    commentsTotalCount.textContent = comments.length;
-    commentsShownCount.textContent = comments.length;
-
-    comments.forEach(({avatar, message, name}) => {
-      const comment = commentTemplate.cloneNode(true);
-      const commentPicture = comment.querySelector('.social__picture');
-      commentPicture.src = avatar;
-      commentPicture.alt = name;
-      comment.querySelector('.social__text').textContent = message;
-      commentFragment.appendChild(comment);
-    });
-
-    commentsList.appendChild(commentFragment);
-    commentCount.classList.add('hidden');
-    commentsLoaderButton.classList.add('hidden');
-    bigPicture.classList.remove('hidden');
-    document.body.classList.add('modal-open');
-
-    document.addEventListener('keydown', onPostCloseButtonKeydown); // обработчик закрытия окна по клавише esc
-
-    bigPictureCloseButton.addEventListener('click', onPostCloseButtonClick); // обрабочик закрытия окна по кнопке;
+// функция отрисовывает комментарии
+const paintComments = (comments) => {
+  const commentFragment = document.createDocumentFragment();
+  comments.forEach(({avatar, message, name}) => {
+    const comment = commentTemplate.cloneNode(true);
+    const commentPicture = comment.querySelector('.social__picture');
+    commentPicture.src = avatar;
+    commentPicture.alt = name;
+    comment.querySelector('.social__text').textContent = message;
+    commentFragment.appendChild(comment);
   });
+  return commentFragment;
 };
 
-for (let i = 0; i < thumbnails.length; i++) { // в цикле навешиваем обработчики
-  onThumbnailClick(thumbnails[i], posts[i].url, posts[i].likes, posts[i].comments, posts[i].description);
-}
+// функция отрисовки поста при клике на миниатюре
+const onThumbnailClick = (post) => {
+  const {url, description, likes, comments} = post;
+
+  bigPictureImage.src = url;
+  postDescription.textContent = description;
+  likesCount.textContent = likes;
+  commentsTotalCount.textContent = comments.length;
+  commentsShownCount.textContent = comments.length;
+
+  const paintedComments = paintComments(comments);
+  commentsList.appendChild(paintedComments);
+
+  commentCount.classList.add('hidden');
+  commentsLoaderButton.classList.add('hidden');
+  bigPicture.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+
+  document.addEventListener('keydown', onPostCloseButtonKeydown); // обработчик закрытия окна по клавише esc
+
+  bigPictureCloseButton.addEventListener('click', onPostCloseButtonClick); // обрабочик закрытия окна по кнопке;
+};
+
+export {onThumbnailClick};
