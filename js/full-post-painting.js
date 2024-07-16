@@ -14,14 +14,14 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
-const onClosePostKeydown = (evt) => { // функция обработки закрытия поста клавишей esc
+const onPostCloseButtonKeydown = (evt) => { // функция обработки закрытия поста клавишей esc
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
     closePost();
   }
 };
 
-const onClosePostClick = (evt) => { // функция обработки закрытия поста кнопкой крестиком
+const onPostCloseButtonClick = (evt) => { // функция обработки закрытия поста кнопкой крестиком
   evt.preventDefault();
   closePost();
 };
@@ -29,11 +29,11 @@ const onClosePostClick = (evt) => { // функция обработки зак�
 function closePost () { // функция закрытия окна поста
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onClosePostKeydown);
-  bigPictureCloseButton.removeEventListener('click', onClosePostClick);
+  document.removeEventListener('keydown', onPostCloseButtonKeydown);
+  bigPictureCloseButton.removeEventListener('click', onPostCloseButtonClick);
 }
 
-const addThumbnailClickHandler = (thumbnail, bigPhoto, likes, comments, description) => { // функция отрисовки поста при клике
+const onThumbnailClick = (thumbnail, bigPhoto, likes, comments, description) => { // функция отрисовки поста при клике
   thumbnail.addEventListener('click', () => {
 
     const commentFragment = document.createDocumentFragment();
@@ -58,12 +58,12 @@ const addThumbnailClickHandler = (thumbnail, bigPhoto, likes, comments, descript
     bigPicture.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
-    document.addEventListener('keydown', onClosePostKeydown); // обработчик закрытия окна по клавише esc
+    document.addEventListener('keydown', onPostCloseButtonKeydown); // обработчик закрытия окна по клавише esc
 
-    bigPictureCloseButton.addEventListener('click', onClosePostClick); // обрабочик закрытия окна по кнопке;
+    bigPictureCloseButton.addEventListener('click', onPostCloseButtonClick); // обрабочик закрытия окна по кнопке;
   });
 };
 
 for (let i = 0; i < thumbnails.length; i++) { // в цикле навешиваем обработчики
-  addThumbnailClickHandler(thumbnails[i], posts[i].url, posts[i].likes, posts[i].comments, posts[i].description);
+  onThumbnailClick(thumbnails[i], posts[i].url, posts[i].likes, posts[i].comments, posts[i].description);
 }
