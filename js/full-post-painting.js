@@ -28,6 +28,7 @@ const onClosePostClick = (evt) => { // функция обработки зак�
 
 function closePost () { // функция закрытия окна поста
   bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onClosePostKeydown);
   bigPictureCloseButton.removeEventListener('click', onClosePostClick);
 }
