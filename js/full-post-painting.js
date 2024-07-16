@@ -34,6 +34,8 @@ function closePost () {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPostCloseButtonKeydown);
   bigPictureCloseButton.removeEventListener('click', onPostCloseButtonClick);
+  commentsList.innerHTML = '';
+
 }
 
 // функция отрисовывает комментарии
@@ -64,8 +66,6 @@ const onThumbnailClick = (id) => {
   const paintedComments = paintComments(comments);
   commentsList.appendChild(paintedComments);
 
-  commentCount.classList.add('hidden');
-  commentsLoaderButton.classList.add('hidden');
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
