@@ -1,7 +1,7 @@
 import { isPressedKeyEscape } from './utils.js'; // импортируем функцию проверки нажата ли клавиша ESC
 import { posts } from './thumbnails-painting.js';
 
-const SHOWN_COMMENTS_PERIOD = 5;
+const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
 let shownCommentsCount = 0;
 
 // записываем в переменные необходимые узлы DOM
@@ -42,32 +42,38 @@ function closePost () {
   commentsLoaderButton.classList.remove('hidden');
 }
 
+function checkCommentsLength(comments) {
+  if (comments.length === 0) {
+    commentsLoaderButton.classList.add('hidden');
+  }
+}
+
 // функция отрисовывает комментарии
 const paintComments = (comments) => {
+  checkCommentsLength(comments);
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
   let currentCommentsCount = 0;
+
   return () => {
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
       currentCommentsCount = workVersionComments.length;
     } else {
       currentCommentsCount = 5;
     }
+
     shownCommentsCount += currentCommentsCount;
     commentsShownCount.textContent = shownCommentsCount;
     const partComments = workVersionComments.splice(0, currentCommentsCount);
+
     partComments.forEach(({avatar, message, name}) => {
       const comment = commentTemplate.cloneNode(true);
       const commentPicture = comment.querySelector('.social__picture');
       commentPicture.src = avatar;
       commentPicture.alt = name;
-
-      if (workVersionComments.length === 0) {
-        commentsLoaderButton.classList.add('hidden');
-      }
-
       comment.querySelector('.social__text').textContent = message;
       commentFragment.appendChild(comment);
+      checkCommentsLength(workVersionComments);
     });
     return commentFragment;
   };
@@ -92,7 +98,7 @@ const onThumbnailClick = (id) => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  commentsLoaderButton.addEventListener('click', () => {
+  commentsLoaderButton.addEventListener('click', () => { // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
     paintedCommentsPart = paintedComments();
     commentsList.appendChild(paintedCommentsPart);
   });
