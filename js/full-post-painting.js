@@ -42,15 +42,8 @@ function closePost () {
   commentsLoaderButton.classList.remove('hidden');
 }
 
-function checkCommentsLength(comments) {
-  if (comments.length === 0) {
-    commentsLoaderButton.classList.add('hidden');
-  }
-}
-
 // функция отрисовывает комментарии
 const paintComments = (comments) => {
-  checkCommentsLength(comments);
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
   let currentCommentsCount = 0;
@@ -73,7 +66,10 @@ const paintComments = (comments) => {
       commentPicture.alt = name;
       comment.querySelector('.social__text').textContent = message;
       commentFragment.appendChild(comment);
-      checkCommentsLength(workVersionComments);
+
+      if (workVersionComments.length === 0) {
+        commentsLoaderButton.classList.add('hidden');
+      }
     });
     return commentFragment;
   };
@@ -89,19 +85,23 @@ const onThumbnailClick = (id) => {
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
 
-  const paintedComments = paintComments(comments);
-  let paintedCommentsPart = paintedComments();
-  commentsList.appendChild(paintedCommentsPart);
+  if (comments.length !== 0) { // проверка что массив комментариев не нулевой
+    const paintedComments = paintComments(comments);
+    let paintedCommentsPart = paintedComments();
+    commentsList.appendChild(paintedCommentsPart);
+
+    commentsLoaderButton.addEventListener('click', () => { // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
+      paintedCommentsPart = paintedComments();
+      commentsList.appendChild(paintedCommentsPart);
+    });
+  } else {
+    commentsLoaderButton.classList.add('hidden');
+  }
 
   commentsShownCount.textContent = shownCommentsCount;
 
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-
-  commentsLoaderButton.addEventListener('click', () => { // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
-    paintedCommentsPart = paintedComments();
-    commentsList.appendChild(paintedCommentsPart);
-  });
 
   document.addEventListener('keydown', onPostCloseButtonKeydown); // обработчик закрытия окна по клавише esc
 
