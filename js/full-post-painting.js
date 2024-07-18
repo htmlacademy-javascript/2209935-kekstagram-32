@@ -17,6 +17,9 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
+let paintedComments;
+let paintedCommentsPart;
+
 // функция обработки закрытия поста клавишей esc
 const onPostCloseButtonKeydown = (evt) => {
   if (isPressedKeyEscape(evt)) {
@@ -40,13 +43,33 @@ function closePost () {
   shownCommentsCount = 0;
   commentsList.innerHTML = '';
   commentsLoaderButton.classList.remove('hidden');
+  commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
+}
+
+function isCommentsArrayEmpty (comments) { // функция проверки не пустой ли массив комментариев
+  if (comments.length === 0) {
+    commentsLoaderButton.classList.add('hidden');
+    return true;
+  }
+}
+
+function onLoadMoreCommentsButton() { // функция-обработчик клика по кнопке Загрузить еще
+  paintedCommentsPart = paintedComments();
+  commentsList.appendChild(paintedCommentsPart);
 }
 
 // функция отрисовывает комментарии
 const paintComments = (comments) => {
   const commentFragment = document.createDocumentFragment();
+
+  if (isCommentsArrayEmpty(comments)) {
+    return () => commentFragment;
+  }
+
   const workVersionComments = structuredClone(comments);
   let currentCommentsCount = 0;
+
+  commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
 
   return () => {
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
@@ -66,10 +89,7 @@ const paintComments = (comments) => {
       commentPicture.alt = name;
       comment.querySelector('.social__text').textContent = message;
       commentFragment.appendChild(comment);
-
-      if (workVersionComments.length === 0) {
-        commentsLoaderButton.classList.add('hidden');
-      }
+      isCommentsArrayEmpty(workVersionComments);
     });
     return commentFragment;
   };
@@ -85,18 +105,9 @@ const onThumbnailClick = (id) => {
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
 
-  if (comments.length !== 0) { // проверка что массив комментариев не нулевой
-    const paintedComments = paintComments(comments);
-    let paintedCommentsPart = paintedComments();
-    commentsList.appendChild(paintedCommentsPart);
-
-    commentsLoaderButton.addEventListener('click', () => { // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
-      paintedCommentsPart = paintedComments();
-      commentsList.appendChild(paintedCommentsPart);
-    });
-  } else {
-    commentsLoaderButton.classList.add('hidden');
-  }
+  paintedComments = paintComments(comments);
+  paintedCommentsPart = paintedComments();
+  commentsList.appendChild(paintedCommentsPart);
 
   commentsShownCount.textContent = shownCommentsCount;
 
