@@ -59,19 +59,20 @@ const paintComments = (comments) => {
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
   let shownCommentsCount = 0;
+  let currentCommentsCount = 0;
 
   commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
 
   return () => {
-    let partComments = [];
+
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
-      shownCommentsCount += workVersionComments.length;
-      partComments = workVersionComments.splice(0, workVersionComments.length);
+      currentCommentsCount = workVersionComments.length;
     } else {
-      shownCommentsCount += 5;
-      partComments = workVersionComments.splice(0, 5);
+      currentCommentsCount = 5;
     }
 
+    const partComments = workVersionComments.splice(0, currentCommentsCount);
+    shownCommentsCount += currentCommentsCount;
     commentsShownCount.textContent = shownCommentsCount;
 
     partComments.forEach(({avatar, message, name}) => {
