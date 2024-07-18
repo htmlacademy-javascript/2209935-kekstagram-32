@@ -61,11 +61,6 @@ function onLoadMoreCommentsButton() { // функция-обработчик к�
 // функция отрисовывает комментарии
 const paintComments = (comments) => {
   const commentFragment = document.createDocumentFragment();
-
-  if (isCommentsArrayEmpty(comments)) {
-    return () => commentFragment;
-  }
-
   const workVersionComments = structuredClone(comments);
   let currentCommentsCount = 0;
 
@@ -105,9 +100,11 @@ const onThumbnailClick = (id) => {
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
 
-  paintedComments = paintComments(comments);
-  paintedCommentsPart = paintedComments();
-  commentsList.appendChild(paintedCommentsPart);
+  if (!isCommentsArrayEmpty(comments)) {
+    paintedComments = paintComments(comments);
+    paintedCommentsPart = paintedComments();
+    commentsList.appendChild(paintedCommentsPart);
+  }
 
   commentsShownCount.textContent = shownCommentsCount;
 
