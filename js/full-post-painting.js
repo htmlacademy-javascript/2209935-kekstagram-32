@@ -58,8 +58,8 @@ function onLoadMoreCommentsButton() { // функция-обработчик к�
 const paintComments = (comments) => {
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
-  let shownCommentsCount = 0;
-  let currentCommentsCount = 0;
+  let shownCommentsCount = 0; // переменная отражает число отображаемых комментариев
+  let currentCommentsCount = 0; // переменная отражает исло комментариев выводимых на данном этапе
 
   commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
 
@@ -90,7 +90,7 @@ const paintComments = (comments) => {
 
 // функция отрисовки поста при клике на миниатюре
 const onThumbnailClick = (id) => {
-  const post = posts[--id];
+  const post = posts[id];
   const {url, description, likes, comments} = post;
 
   bigPictureImage.src = url;

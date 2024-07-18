@@ -13,7 +13,7 @@ const postsFragment = document.createDocumentFragment();
 posts.forEach(({id, url, description, likes, comments}) => {
   const post = postTemplate.cloneNode(true);
   const postPicture = post.querySelector('.picture__img');
-  post.setAttribute('postid', id);
+  post.setAttribute('data-postid', id);
   postPicture.src = url;
   postPicture.alt = description;
   post.querySelector('.picture__comments').textContent = comments.length;
@@ -27,7 +27,7 @@ picturesContainer.appendChild(postsFragment);
 picturesContainer.addEventListener('click', (evt) => {
   const target = evt.target.closest('.picture');
   if (target) {
-    onThumbnailClick(target.getAttribute('postid'));
+    onThumbnailClick(target.getAttribute('data-postid') - 1);
   }
 });
 
