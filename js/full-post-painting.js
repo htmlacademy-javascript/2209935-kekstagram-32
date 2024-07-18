@@ -2,7 +2,6 @@ import { isPressedKeyEscape } from './utils.js'; // импортируем фу�
 import { posts } from './thumbnails-painting.js';
 
 const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
-let shownCommentsCount = 0;
 
 // записываем в переменные необходимые узлы DOM
 const bigPicture = document.querySelector('.big-picture');
@@ -18,7 +17,6 @@ const commentsList = bigPicture.querySelector('.social__comments');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
 let paintedComments;
-let paintedCommentsPart;
 
 // функция обработки закрытия поста клавишей esc
 const onPostCloseButtonKeydown = (evt) => {
@@ -40,7 +38,6 @@ function closePost () {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPostCloseButtonKeydown);
   bigPictureCloseButton.removeEventListener('click', onPostCloseButtonClick);
-  shownCommentsCount = 0;
   commentsList.innerHTML = '';
   commentsLoaderButton.classList.remove('hidden');
   commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
@@ -54,28 +51,28 @@ function isCommentsArrayEmpty (comments) { // функция проверки н
 }
 
 function onLoadMoreCommentsButton() { // функция-обработчик клика по кнопке Загрузить еще
-  paintedCommentsPart = paintedComments();
-  commentsList.appendChild(paintedCommentsPart);
+  commentsList.appendChild(paintedComments());
 }
 
 // функция отрисовывает комментарии
 const paintComments = (comments) => {
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
-  let currentCommentsCount = 0;
+  let shownCommentsCount = 0;
 
   commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
 
   return () => {
+    let partComments = [];
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
-      currentCommentsCount = workVersionComments.length;
+      shownCommentsCount += workVersionComments.length;
+      partComments = workVersionComments.splice(0, workVersionComments.length);
     } else {
-      currentCommentsCount = 5;
+      shownCommentsCount += 5;
+      partComments = workVersionComments.splice(0, 5);
     }
 
-    shownCommentsCount += currentCommentsCount;
     commentsShownCount.textContent = shownCommentsCount;
-    const partComments = workVersionComments.splice(0, currentCommentsCount);
 
     partComments.forEach(({avatar, message, name}) => {
       const comment = commentTemplate.cloneNode(true);
@@ -102,11 +99,10 @@ const onThumbnailClick = (id) => {
 
   if (!isCommentsArrayEmpty(comments)) {
     paintedComments = paintComments(comments);
-    paintedCommentsPart = paintedComments();
-    commentsList.appendChild(paintedCommentsPart);
+    commentsList.appendChild(paintedComments());
+  } else {
+    commentsShownCount.textContent = 0;
   }
-
-  commentsShownCount.textContent = shownCommentsCount;
 
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
