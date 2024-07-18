@@ -36,4 +36,6 @@ const getRandomArrayElement = (elements) => {
   return elements[indexElement()];
 };
 
-export{getRandomInteger, getRandomArrayElement, createOrderedIdGenerator, createRandomIdFromRangeGenerator};
+const isPressedKeyEscape = (evt) => evt.key === 'Escape';
+
+export{getRandomInteger, getRandomArrayElement, createOrderedIdGenerator, createRandomIdFromRangeGenerator, isPressedKeyEscape};
