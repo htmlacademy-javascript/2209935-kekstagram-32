@@ -20,25 +20,22 @@ function checkDuplicateHash (array) {
 }
 
 function validateHashTagsArray (value) {
-  return /^(#[a-zа-яё0-9]{1,19})(\s+#[a-zа-яё0-9]{1,19}){0,5}$/i.test(value);
+  return /^(#[a-zа-яё0-9]{1,19})(\s+#[a-zа-яё0-9]{1,19}){0,4}$/i.test(value);
 }
 
 function getHashtagsErrorMessage (value) {
   let errorString = 'Ошибка ввода: ';
-  if (/^(#[a-zа-яё0-9]{1,19})(\s+#[a-zа-яё0-9]{1,19}){0,5}$/i.test(value)) {
-    const inputHashtagsArray = value.match(/#[a-zа-яё0-9]{1,19}/g);
-    if (checkDuplicateHash(inputHashtagsArray)) {
-      errorString += 'хэштеги повторяются';
-      return errorString;
-    }
-    if (inputHashtagsArray.length > 5) {
-      errorString += 'превышено количество хэштегов';
-      return errorString;
-    }
-  } else {
-    errorString += 'введен невалидный хэштег';
+  const inputHashtagsArray = value.match(/#[a-zа-яё0-9]{1,19}/g);
+  if (checkDuplicateHash(inputHashtagsArray)) {
+    errorString += 'хэштеги повторяются';
     return errorString;
   }
+  if (inputHashtagsArray.length > 5) {
+    errorString += 'превышено количество хэштегов';
+    return errorString;
+  }
+  errorString += 'введен невалидный хэштег';
+  return errorString;
 }
 
 pristine.addValidator(uploadImageForm.querySelector('.text__hashtags'), validateHashTagsArray, getHashtagsErrorMessage);
