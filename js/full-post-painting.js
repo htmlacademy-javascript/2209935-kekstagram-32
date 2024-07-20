@@ -43,7 +43,7 @@ function closePost () {
   commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
 }
 
-function isCommentsArrayEmpty (comments) { // функция проверки не пустой ли массив комментариев
+function hideCommentsLoaderButton (comments) { // функция проверки не пустой ли массив комментариев
   if (comments.length === 0) {
     commentsLoaderButton.classList.add('hidden');
     return true;
@@ -82,7 +82,7 @@ const paintComments = (comments) => {
       commentPicture.alt = name;
       comment.querySelector('.social__text').textContent = message;
       commentFragment.appendChild(comment);
-      isCommentsArrayEmpty(workVersionComments);
+      hideCommentsLoaderButton(workVersionComments);
     });
     return commentFragment;
   };
@@ -98,7 +98,7 @@ const onThumbnailClick = (id) => {
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
 
-  if (!isCommentsArrayEmpty(comments)) {
+  if (!hideCommentsLoaderButton(comments)) {
     paintedComments = paintComments(comments);
     commentsList.appendChild(paintedComments());
   } else {
