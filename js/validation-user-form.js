@@ -17,7 +17,7 @@ function checkDuplicateHash (array) {
 }
 
 function validateHashTags (value) {
-  return /^(#[a-zа-яё0-9]{1,19})(\s+#[a-zа-яё0-9]{1,19}){0,4}$/i.test(value);
+  return /^(#[a-zа-яё0-9]{1,19})*(\s+#[a-zа-яё0-9]{1,19}){0,4}$/i.test(value);
 }
 
 function getHashtagsErrorMessage (value) {
