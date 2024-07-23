@@ -1,10 +1,17 @@
 import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
 
+let hashtagsErrorArray = [];
+
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper'
 });
+
+function onUserFormSubmitClick (evt) {
+  evt.preventDefault();
+  pristine.validate();
+}
 
 function checkDuplicateHash (array) {
   const set = new Set();
@@ -16,24 +23,28 @@ function checkDuplicateHash (array) {
   }
 }
 
-function validateHashTags (value) {
-  return /^(#[a-zа-яё0-9]{1,19})*(\s+#[a-zа-яё0-9]{1,19}){0,4}$/i.test(value);
+function getHashtagsErrorMessage() {
+  return hashtagsErrorArray;
 }
 
-function getHashtagsErrorMessage (value) {
-  let errorString = 'Ошибка ввода: ';
-  if (/^(#[a-zа-яё0-9]{1,19})(\s+#[a-zа-яё0-9]{1,19})*$/i.test(value)) {
+function validateHashTags (value) {
+  hashtagsErrorArray = [];
+  if (/^(#[a-zа-яё0-9]{1,19})*(\s+#[a-zа-яё0-9]{1,19})*$/i.test(value)) {
     const inputHashtagsArray = value.match(/#[a-zа-яё0-9]{1,19}/g);
     if (checkDuplicateHash(inputHashtagsArray)) {
-      errorString += 'хэштеги повторяются ';
+      hashtagsErrorArray.push('Хэштеги повторяются');
     }
     if (inputHashtagsArray.length > 5) {
-      errorString += 'превышено количество хэштегов ';
+      hashtagsErrorArray.push('Превышено количество хэштегов');
     }
-    return errorString;
+    if (hashtagsErrorArray.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
-    errorString += 'введен невалидный хэштег';
-    return errorString;
+    hashtagsErrorArray.push('Введен невалидный хэштег');
+    return false;
   }
 }
 
@@ -44,9 +55,4 @@ function validateComment (value) {
 pristine.addValidator(hashtagInput, validateHashTags, getHashtagsErrorMessage);
 pristine.addValidator(commentInput, validateComment, 'Длина комментария больше 140 символов');
 
-
-uploadImageForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
-
+export {pristine, onUserFormSubmitClick};

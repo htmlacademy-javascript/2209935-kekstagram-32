@@ -1,5 +1,6 @@
 import { picturesContainer } from './thumbnails-painting.js';
 import { isPressedKeyEscape } from './utils.js';
+import { pristine, onUserFormSubmitClick } from './validation-user-form.js';
 
 const imageUploadButton = picturesContainer.querySelector('.img-upload__input');
 const imageUploadPopup = picturesContainer.querySelector('.img-upload__overlay');
@@ -21,6 +22,7 @@ function openEditImagePopup() {
 
   popupCloseButton.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+  uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
 }
 
 function closeEditImagePopup () {
@@ -30,6 +32,9 @@ function closeEditImagePopup () {
 
   popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+
+  uploadImageForm.removeEventListener('submit', onUserFormSubmitClick);
+  pristine.reset();
 }
 
 function onEditImagePopupChange (evt) {
