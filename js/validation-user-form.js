@@ -13,7 +13,7 @@ function onUserFormSubmitClick (evt) {
   pristine.validate();
 }
 
-function checkDuplicateHash (array) {
+function checkDuplicateHashtags (array) {
   const set = new Set();
   for (let i = 0; i < array.length; i++) {
     if (set.has(array[i])) {
@@ -31,7 +31,7 @@ function validateHashTags (value) {
   hashtagsErrorArray = [];
   if (/^(#[a-zа-яё0-9]{1,19})*(\s+#[a-zа-яё0-9]{1,19})*$/i.test(value)) {
     const inputHashtagsArray = value.match(/#[a-zа-яё0-9]{1,19}/g);
-    if (checkDuplicateHash(inputHashtagsArray)) {
+    if (checkDuplicateHashtags(inputHashtagsArray)) {
       hashtagsErrorArray.push('Хэштеги повторяются');
     }
     if (inputHashtagsArray.length > 5) {
@@ -48,11 +48,13 @@ function validateHashTags (value) {
   }
 }
 
-function validateComment (value) {
-  return /^.{0,140}$/i.test(value);
+function validateCommentInput (value) {
+  return value.length < 140;
 }
 
 pristine.addValidator(hashtagInput, validateHashTags, getHashtagsErrorMessage);
-pristine.addValidator(commentInput, validateComment, 'Длина комментария больше 140 символов');
+pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
+
+uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
 
 export {pristine, onUserFormSubmitClick};
