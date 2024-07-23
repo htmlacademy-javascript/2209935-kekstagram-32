@@ -1,6 +1,7 @@
 import { picturesContainer } from './thumbnails-painting.js';
 import { isPressedKeyEscape } from './utils.js';
 import { pristine, onUserFormSubmitClick } from './validation-user-form.js';
+import {smallerImageSizeButton, biggerImageSizeButton, decreaseImageSize, increaseImageSize} from './user-form-change-size-image.js';
 
 const imageUploadButton = picturesContainer.querySelector('.img-upload__input');
 const imageUploadPopup = picturesContainer.querySelector('.img-upload__overlay');
@@ -23,6 +24,9 @@ function openEditImagePopup() {
   popupCloseButton.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
+  smallerImageSizeButton.addEventListener('click', decreaseImageSize);
+  biggerImageSizeButton.addEventListener('click', increaseImageSize);
+
 }
 
 function closeEditImagePopup () {
@@ -32,8 +36,9 @@ function closeEditImagePopup () {
 
   popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-
   uploadImageForm.removeEventListener('submit', onUserFormSubmitClick);
+  smallerImageSizeButton.removeEventListener('click', decreaseImageSize);
+  biggerImageSizeButton.removeEventListener('click', increaseImageSize);
   pristine.reset();
 }
 
@@ -59,4 +64,4 @@ function onEditImagePopupCloseButtonKeydown(evt) {
 
 imageUploadButton.addEventListener('change', onEditImagePopupChange);
 
-export {uploadImageForm, hashtagInput, commentInput};
+export {uploadImageForm, hashtagInput, commentInput, imageUploadPopup, uploadedImagePreview};
