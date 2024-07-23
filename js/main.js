@@ -4,5 +4,6 @@ import { posts } from './thumbnails-painting.js';
 import './validation-user-form.js';
 import './user-form.js';
 import './user-form-change-size-image.js';
+import './image-effects.js';
 
 console.log(posts);
