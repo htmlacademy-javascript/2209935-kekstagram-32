@@ -6,6 +6,7 @@ const picturesContainer = document.querySelector('.pictures');
 const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const posts = createPosts(); // генерируем массив постов
+const posts1 = createPosts();
 
 const postsFragment = document.createDocumentFragment();
 
@@ -31,4 +32,4 @@ picturesContainer.addEventListener('click', (evt) => {
   }
 });
 
-export {posts, picturesContainer};
+export {posts, picturesContainer, posts1};
