@@ -2,6 +2,7 @@ import { picturesContainer } from './thumbnails-painting.js';
 import { isPressedKeyEscape } from './utils.js';
 import { pristine, onUserFormSubmitClick } from './validation-user-form.js';
 import {smallerImageSizeButton, biggerImageSizeButton, decreaseImageSize, increaseImageSize} from './user-form-change-size-image.js';
+import { imageEffectsSlider, changeImageEffectSlider } from './image-effects.js';
 
 const imageUploadButton = picturesContainer.querySelector('.img-upload__input');
 const imageUploadPopup = picturesContainer.querySelector('.img-upload__overlay');
@@ -26,7 +27,9 @@ function openEditImagePopup() {
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
   smallerImageSizeButton.addEventListener('click', decreaseImageSize);
   biggerImageSizeButton.addEventListener('click', increaseImageSize);
-
+  imageEffectsSlider.classList.add('visually-hidden');
+  uploadedImagePreview.style.transform = 'scale(1)';
+  uploadedImagePreview.style.removeProperty('filter');
 }
 
 function closeEditImagePopup () {
@@ -40,6 +43,7 @@ function closeEditImagePopup () {
   smallerImageSizeButton.removeEventListener('click', decreaseImageSize);
   biggerImageSizeButton.removeEventListener('click', increaseImageSize);
   pristine.reset();
+  changeImageEffectSlider.reset();
 }
 
 function onEditImagePopupChange (evt) {

@@ -1,31 +1,37 @@
-import { imageUploadPopup, uploadedImagePreview } from './user-form';
+import { uploadedImagePreview } from './user-form';
+import { picturesContainer } from './thumbnails-painting.js';
 
-const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
-const imageEffectsContainer = imageUploadPopup.querySelector('.effects__list');
-const imageEffectValue = imageUploadPopup.querySelector('.effect-level__value');
+const imageEffectsSlider = picturesContainer.querySelector('.effect-level__slider');
+const imageEffectsContainer = picturesContainer.querySelector('.effects__list');
+const imageEffectValue = picturesContainer.querySelector('.effect-level__value');
 
-let currentSliderEffect = '';
-let currentSliderValue = 0;
+let currentSliderEffect = 'effect-none';
 
-noUiSlider.create(imageEffectsSlider, {
+const changeImageEffectSlider = noUiSlider.create(imageEffectsSlider, {
   range: {
     min: 0,
-    max: 10,
+    max: 1,
   },
-  start: 0,
-  step: 1,
+  start: 1,
+  step: 0.1,
   connect: 'lower',
 });
+
+function hideEffectSlider () {
+  imageEffectsSlider.classList.remove('visually-hidden');
+}
 
 function onEffectItemClick (element) {
   currentSliderEffect = element.getAttribute('id');
   switch (currentSliderEffect) {
     case 'effect-none':
-      //imageEffectsSlider.noUiSlider.destroy();
+      imageEffectsSlider.classList.add('visually-hidden');
+      changeImageEffectSlider.reset();
       uploadedImagePreview.style.removeProperty('filter');
       break;
     case 'effect-chrome':
-      imageEffectsSlider.noUiSlider.updateOptions({
+      hideEffectSlider();
+      changeImageEffectSlider.updateOptions({
         range: {
           min: 0,
           max: 1,
@@ -35,7 +41,8 @@ function onEffectItemClick (element) {
       });
       break;
     case 'effect-sepia':
-      imageEffectsSlider.noUiSlider.updateOptions({
+      hideEffectSlider();
+      changeImageEffectSlider.updateOptions({
         range: {
           min: 0,
           max: 1,
@@ -45,7 +52,8 @@ function onEffectItemClick (element) {
       });
       break;
     case 'effect-marvin':
-      imageEffectsSlider.noUiSlider.updateOptions({
+      hideEffectSlider();
+      changeImageEffectSlider.updateOptions({
         range: {
           min: 0,
           max: 100,
@@ -55,7 +63,8 @@ function onEffectItemClick (element) {
       });
       break;
     case 'effect-phobos':
-      imageEffectsSlider.noUiSlider.updateOptions({
+      hideEffectSlider();
+      changeImageEffectSlider.updateOptions({
         range: {
           min: 0,
           max: 3,
@@ -65,7 +74,8 @@ function onEffectItemClick (element) {
       });
       break;
     case 'effect-heat':
-      imageEffectsSlider.noUiSlider.updateOptions({
+      hideEffectSlider();
+      changeImageEffectSlider.updateOptions({
         range: {
           min: 1,
           max: 3,
@@ -77,8 +87,8 @@ function onEffectItemClick (element) {
   }
 }
 
-function onChangeEffectUpdate () {
-  currentSliderValue = imageEffectsSlider.noUiSlider.get();
+function onChangeEffectSliderUpdate () {
+  const currentSliderValue = changeImageEffectSlider.get();
   imageEffectValue.value = currentSliderValue;
 
   switch (currentSliderEffect) {
@@ -107,4 +117,6 @@ imageEffectsContainer.addEventListener('click', (evt) => {
   }
 });
 
-imageEffectsSlider.noUiSlider.on('update', onChangeEffectUpdate);
+changeImageEffectSlider.on('update', onChangeEffectSliderUpdate);
+
+export {imageEffectsSlider, changeImageEffectSlider};
