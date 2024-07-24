@@ -58,7 +58,7 @@ function onEditImagePopupCloseButtonClick() {
 function onEditImagePopupCloseButtonKeydown(evt) {
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
-    if (document.activeElement === hashtagInput | document.activeElement === commentInput) {
+    if (document.activeElement === hashtagInput || document.activeElement === commentInput) {
       evt.stopPropagation();
     } else {
       closeEditImagePopup();
