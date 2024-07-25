@@ -1,5 +1,7 @@
 import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
 
+let hashtagsArray = [];
+
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
@@ -26,7 +28,7 @@ function validateHashTagsCorrect (value) {
   if (value.length === 0) {
     return true;
   }
-  const hashtagsArray = stringToArray(value);
+  hashtagsArray = stringToArray(value);
   for (let i = 0; i < hashtagsArray.length; i++) {
     if (!/^#[a-zа-яё0-9]{1,19}$/.test(hashtagsArray[i])) {
       return false;
@@ -35,16 +37,14 @@ function validateHashTagsCorrect (value) {
   return true;
 }
 
-function validateHashTagsTooMuch (value) {
-  const hashtagsArray = stringToArray(value);
+function validateHashTagsTooMuch () {
   if(hashtagsArray.length > 5) {
     return false;
   }
   return true;
 }
 
-function validateHashTagsDuplicate (value) {
-  const hashtagsArray = stringToArray(value);
+function validateHashTagsDuplicate () {
   if (checkDuplicateHashtags(hashtagsArray)) {
     return false;
   }
@@ -58,6 +58,7 @@ function validateCommentInput (value) {
 pristine.addValidator(hashtagInput, validateHashTagsCorrect, 'Введен невалидный хештег');
 pristine.addValidator(hashtagInput, validateHashTagsTooMuch, 'Превышено количество хештегов');
 pristine.addValidator(hashtagInput, validateHashTagsDuplicate, 'Хештеги повторяются');
+
 pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
 
 uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
