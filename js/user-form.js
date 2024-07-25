@@ -1,7 +1,7 @@
 import { picturesContainer } from './thumbnails-painting.js';
 import { isPressedKeyEscape } from './utils.js';
 import { pristine, onUserFormSubmitClick } from './validation-user-form.js';
-import {smallerImageSizeButton, biggerImageSizeButton, decreaseImageSize, increaseImageSize} from './user-form-change-size-image.js';
+import {changeImageSize, changeSizeButtonsContainer} from './user-form-change-size-image.js';
 import { uploadedImagePreview, imageEffectsSlider, changeImageEffectSlider } from './image-effects.js';
 
 const imageUploadButton = picturesContainer.querySelector('.img-upload__input');
@@ -24,8 +24,14 @@ function openEditImagePopup() {
   popupCloseButton.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
-  smallerImageSizeButton.addEventListener('click', decreaseImageSize);
-  biggerImageSizeButton.addEventListener('click', increaseImageSize);
+
+  changeSizeButtonsContainer.addEventListener('click', (evt) => {
+    const target = evt.target.closest('.scale__control');
+    if (target) {
+      changeImageSize(target);
+    }
+  });
+
   imageEffectsSlider.classList.add('visually-hidden');
   uploadedImagePreview.style.transform = 'scale(1)';
   uploadedImagePreview.style.removeProperty('filter');
@@ -35,12 +41,9 @@ function closeEditImagePopup () {
   imageUploadButton.value = '';
   imageUploadPopup.classList.add('hidden');
   document.body.classList.remove('modal-open');
-
   popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.removeEventListener('submit', onUserFormSubmitClick);
-  smallerImageSizeButton.removeEventListener('click', decreaseImageSize);
-  biggerImageSizeButton.removeEventListener('click', increaseImageSize);
   pristine.reset();
   changeImageEffectSlider.reset();
 }
