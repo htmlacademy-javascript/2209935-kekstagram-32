@@ -59,20 +59,17 @@ const paintComments = (comments) => {
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
   let shownCommentsCount = 0; // переменная отражает число отображаемых комментариев
-  let currentCommentsCount = 0; // переменная отражает исло комментариев выводимых на данном этапе
 
   commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
 
   return () => {
-
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
-      currentCommentsCount = workVersionComments.length;
+      shownCommentsCount += workVersionComments.length;
     } else {
-      currentCommentsCount = 5;
+      shownCommentsCount += 5;
     }
 
-    const partComments = workVersionComments.splice(0, currentCommentsCount);
-    shownCommentsCount += currentCommentsCount;
+    const partComments = workVersionComments.splice(0, 5);
     commentsShownCount.textContent = shownCommentsCount;
 
     partComments.forEach(({avatar, message, name}) => {

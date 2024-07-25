@@ -54,28 +54,30 @@ const NAMES = [ // массив для выборки имен
 const MAX_COMMENTS_NUMBER = 30; // максимальное число комментариев
 const POSTS_NUMBER = 25; // количество постов
 
+const createPosts = () => {
+  const generatePostId = createOrderedIdGenerator(); // генерируем id для постов
+  const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
 
-const generatePostId = createOrderedIdGenerator(); // генерируем id для постов
-const getCommentsNumber = createRandomIdFromRangeGenerator(0, MAX_COMMENTS_NUMBER); // генерируем случайное число комментариев
+  const createPostComments = (id) => ({ // функция создания комментария
+    id,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES)
+  });
 
-const createPostComments = (id) => ({ // функция создания комментария
-  id,
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES)
-});
-
-const createPost = () => { // функция создания поста
-  const generatePostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
-  const universePostId = generatePostId();
-  return {
-    id: universePostId,
-    url: `photos/${ universePostId }.jpg`,
-    description: getRandomArrayElement(POST_DESCRIPTIONS),
-    likes: getRandomInteger(15, 200),
-    comments: Array.from({length: getCommentsNumber()}, () => createPostComments(generatePostCommentsId())),
+  const createPost = (id) => { // функция создания поста
+    const generatePostCommentsId = createOrderedIdGenerator(); // генерируем id для комментариев
+    const universePostId = id;
+    return {
+      id: universePostId,
+      url: `photos/${ universePostId }.jpg`,
+      description: getRandomArrayElement(POST_DESCRIPTIONS),
+      likes: getRandomInteger(15, 200),
+      comments: Array.from({length: getCommentsNumber()}, () => createPostComments(generatePostCommentsId())),
+    };
   };
+
+  return Array.from({length: POSTS_NUMBER}, () => createPost(generatePostId()));
 };
-const createPosts = () => Array.from({length: POSTS_NUMBER}, createPost);
 
 export {createPosts};

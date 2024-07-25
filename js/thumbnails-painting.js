@@ -31,4 +31,4 @@ picturesContainer.addEventListener('click', (evt) => {
   }
 });
 
-export {posts};
+export {posts, picturesContainer};
