@@ -1,6 +1,5 @@
 import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
 
-
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
