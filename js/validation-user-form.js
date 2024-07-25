@@ -12,16 +12,12 @@ function onUserFormSubmitClick (evt) {
   pristine.validate();
 }
 
-function checkDuplicateHashtags (array) {
-  const set = new Set(array);
-  return set.size !== array.length;
-}
-
 const createValidator = (type) => {
   let hashtagsArray = [];
 
   return (value) => {
     hashtagsArray = value.trim().toLowerCase().split(' ');
+    const set = new Set(hashtagsArray);
     switch (type) {
       case 'correct':
         if (value.length === 0) {
@@ -40,7 +36,7 @@ const createValidator = (type) => {
         }
         return true;
       case 'duplicate':
-        if (checkDuplicateHashtags(hashtagsArray)) {
+        if (set.size !== hashtagsArray.length) {
           return false;
         }
         return true;

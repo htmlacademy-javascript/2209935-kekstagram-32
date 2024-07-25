@@ -2,12 +2,11 @@ import { picturesContainer } from './thumbnails-painting.js';
 import { isPressedKeyEscape } from './utils.js';
 import { pristine, onUserFormSubmitClick } from './validation-user-form.js';
 import {smallerImageSizeButton, biggerImageSizeButton, decreaseImageSize, increaseImageSize} from './user-form-change-size-image.js';
-import { imageEffectsSlider, changeImageEffectSlider } from './image-effects.js';
+import { uploadedImagePreview, imageEffectsSlider, changeImageEffectSlider } from './image-effects.js';
 
 const imageUploadButton = picturesContainer.querySelector('.img-upload__input');
 const imageUploadPopup = picturesContainer.querySelector('.img-upload__overlay');
 const popupCloseButton = imageUploadPopup.querySelector('.img-upload__cancel');
-const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
 const effectsPrewiewImage = imageUploadPopup.querySelectorAll('.effects__preview');
 const uploadImageForm = picturesContainer.querySelector('.img-upload__form');
 const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
