@@ -70,4 +70,4 @@ function onEditImagePopupCloseButtonKeydown(evt) {
 
 imageUploadButton.addEventListener('change', onEditImagePopupChange);
 
-export {uploadImageForm, hashtagInput, commentInput, imageUploadPopup, uploadedImagePreview };
+export {uploadImageForm, hashtagInput, commentInput, imageUploadPopup, uploadedImagePreview, closeEditImagePopup };

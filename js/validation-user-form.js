@@ -1,4 +1,6 @@
-import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
+import { uploadImageForm, hashtagInput, commentInput, closeEditImagePopup } from './user-form.js';
+import { bodyElement } from './loader-data.js';
+import { isPressedKeyEscape } from './utils.js';
 
 
 const pristine = new Pristine(uploadImageForm, {
@@ -7,9 +9,72 @@ const pristine = new Pristine(uploadImageForm, {
   errorTextParent: 'img-upload__field-wrapper'
 });
 
+function removeLoadMessage(container, element) {
+  container.removeChild(element);
+}
+
+function loadDataFromUserSucces () {
+  const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
+  bodyElement.appendChild(successMessageTemplate);
+
+  const successMessage = bodyElement.querySelector('.success');
+  const successMessageCloseButton = successMessage.querySelector('.success__button');
+
+  successMessageCloseButton.addEventListener('click', () => {
+    removeLoadMessage(bodyElement, successMessage);
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isPressedKeyEscape(evt)) {
+      removeLoadMessage(bodyElement, successMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    removeLoadMessage(bodyElement, successMessage);
+  });
+
+  closeEditImagePopup();
+}
+
+function loadDataFromUserError () {
+  const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
+  bodyElement.appendChild(errorMessageTemplate);
+
+  const errorMessage = bodyElement.querySelector('.error');
+  const errorMessageCloseButton = errorMessage.querySelector('.error__button');
+
+  errorMessageCloseButton.addEventListener('click', () => {
+    removeLoadMessage(bodyElement, errorMessage);
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isPressedKeyEscape(evt)) {
+      removeLoadMessage(bodyElement, errorMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    removeLoadMessage(bodyElement, errorMessage);
+  });
+}
+
 function onUserFormSubmitClick (evt) {
   evt.preventDefault();
-  pristine.validate();
+
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+
+    fetch ('https://32.javascript.htmlacademy.pro/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      }
+    ).then (loadDataFromUserSucces)
+      .catch(loadDataFromUserError);
+  }
 }
 
 const createValidator = (type) => {
