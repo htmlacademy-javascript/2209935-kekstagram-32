@@ -1,5 +1,5 @@
 import { isPressedKeyEscape } from './utils.js'; // импортируем функцию проверки нажата ли клавиша ESC
-import { posts } from './thumbnails-painting.js';
+import { postsArray } from './loader-data.js';
 
 const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
 
@@ -90,7 +90,7 @@ const paintComments = (comments) => {
 
 // функция отрисовки поста при клике на миниатюре
 const onThumbnailClick = (id) => {
-  const post = posts[id];
+  const post = postsArray[id];
   const {url, description, likes, comments} = post;
 
   bigPictureImage.src = url;
