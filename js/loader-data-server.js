@@ -1,6 +1,7 @@
 import { painPosts } from './thumbnails-painting.js';
 
 const bodyElement = document.querySelector('body');
+const SHOW_ERROR_MESSAGE_TIME = 5000;
 
 let postsArray = [];
 
@@ -9,8 +10,8 @@ function loadDataFromServerError () {
   const errorMessage = loadErrorTemplate.cloneNode(true);
   bodyElement.appendChild(errorMessage);
   setTimeout(() => {
-    bodyElement.removeChild(errorMessage);
-  }, 5000);
+    errorMessage.remove();
+  }, SHOW_ERROR_MESSAGE_TIME);
 }
 
 fetch('https://32.javascript.htmlacademy.pro/kekstagram/data')

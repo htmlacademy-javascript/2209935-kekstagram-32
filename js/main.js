@@ -1,4 +1,4 @@
-import './loader-data.js';
+import './loader-data-server.js';
 import './thumbnails-painting.js';
 import './full-post-painting.js';
 import './validation-user-form.js';
