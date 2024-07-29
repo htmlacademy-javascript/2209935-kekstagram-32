@@ -14,9 +14,7 @@ const commentInput = uploadImageForm.querySelector('.text__description');
 const changeSizeButtonsContainer = imageUploadPopup.querySelector('.img-upload__scale');
 const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
 const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
-const inputEffectNone = imageUploadPopup.querySelector('#effect-none');
 const submitButton = uploadImageForm.querySelector('.img-upload__submit');
-const changeImageSizeInput = imageUploadPopup.querySelector('.scale__control--value');
 
 function onUserFormSubmitClick (evt) {
   evt.preventDefault();
@@ -58,17 +56,13 @@ function openEditImagePopup() {
 }
 
 function closeEditImagePopup () {
-  imageUploadButton.value = '';
   imageUploadPopup.classList.add('hidden');
   document.body.classList.remove('modal-open');
   popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   pristine.reset();
   changeImageEffectSlider.reset();
-  hashtagInput.value = '';
-  commentInput.value = '';
-  inputEffectNone.checked = true;
-  changeImageSizeInput.value = '100%';
+  uploadImageForm.reset();
 }
 
 function onEditImagePopupChange (evt) {
