@@ -4,24 +4,21 @@ const Route = {
   SEND_DATA: '/'
 };
 
-const getData = (onError) =>
-  fetch(`${BASE_URL}${Route.GET_DATA}`)
-    .then((response) => response.json())
-    .catch(onError);
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
 
-const sendData = (body) =>
-  fetch (`${BASE_URL}${Route.SEND_DATA}`,
-    {
-      method: 'POST',
-      body,
-    }
-  ).then ((response) => {
-    if (!response.ok) {
-      throw new Error();
-    }
-  })
-    .catch(() => {
-      throw new Error();
+const load = (route, method = Method.GET, body = null) =>
+  fetch (`${BASE_URL}${route}`,{method, body})
+    .then ((response) => {
+      if (!response.ok) {
+        throw new Error();
+      }
+      return response.json();
     });
+
+const getData = () => load(Route.GET_DATA);
+const sendData = (body) => load(Route.SEND_DATA, Method.POST, body);
 
 export {getData, sendData};

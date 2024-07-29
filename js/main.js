@@ -21,10 +21,11 @@ function loadDataFromServerError () {
   }, SHOW_ERROR_MESSAGE_TIME);
 }
 
-getData(loadDataFromServerError)
+getData()
   .then((posts) => {
     painPosts(posts);
     postsArray = posts;
-  });
+  })
+  .catch(loadDataFromServerError);
 
 export {postsArray};
