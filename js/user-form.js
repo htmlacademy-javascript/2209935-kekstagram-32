@@ -1,6 +1,6 @@
 import { isPressedKeyEscape } from './utils.js';
 import { pristine } from './validation-user-form.js';
-import {changeImageSize} from './user-form-change-size-image.js';
+import {changeImageSizeGenerator} from './user-form-change-size-image.js';
 import {changeImageEffectSlider } from './image-effects.js';
 import { sendData } from './api.js';
 
@@ -42,6 +42,8 @@ function openEditImagePopup() {
   popupCloseButton.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
+
+  const changeImageSize = changeImageSizeGenerator();
 
   changeSizeButtonsContainer.addEventListener('click', (evt) => {
     const target = evt.target.closest('.scale__control');
