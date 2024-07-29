@@ -1,5 +1,9 @@
-import { uploadImageForm, hashtagInput, commentInput} from './user-form.js';
-import { loadDataFromUser } from './loader-data-user.js';
+import { sendData } from './api.js';
+
+const uploadImageForm = document.querySelector('.img-upload__form');
+const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
+const commentInput = uploadImageForm.querySelector('.text__description');
+const submitButton = uploadImageForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
@@ -44,12 +48,21 @@ function validateCommentInput (value) {
   return value.length < 140;
 }
 
-function onUserFormSubmitClick (evt) {
-  evt.preventDefault();
+function onUserFormSubmitClick (onSuccess, onError) {
 
-  if (pristine.validate()) {
-    loadDataFromUser(evt);
-  }
+  uploadImageForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    submitButton.disabled = true;
+    if (pristine.validate()) {
+
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch(onError)
+        .finally(() => {
+          submitButton.disabled = false;
+        });
+    }
+  });
 }
 
 const validatorCorrect = createValidator('correct');
@@ -60,7 +73,5 @@ pristine.addValidator(hashtagInput, validatorOverCount, 'Превышено ко
 pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повторяются');
 
 pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
-
-uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
 
 export {pristine, onUserFormSubmitClick};

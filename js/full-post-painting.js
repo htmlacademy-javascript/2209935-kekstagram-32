@@ -1,5 +1,5 @@
 import { isPressedKeyEscape } from './utils.js'; // импортируем функцию проверки нажата ли клавиша ESC
-import { postsArray } from './loader-data-server.js';
+import { postsArray } from './main.js';
 
 const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
 

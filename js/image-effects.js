@@ -1,9 +1,8 @@
-import { picturesContainer } from './thumbnails-painting.js';
-
-const uploadedImagePreview = picturesContainer.querySelector('.img-upload__preview img');
-const imageEffectsSlider = picturesContainer.querySelector('.effect-level__slider');
-const imageEffectsContainer = picturesContainer.querySelector('.effects__list');
-const imageEffectValue = picturesContainer.querySelector('.effect-level__value');
+const imageUploadPopup = document.querySelector('.img-upload__overlay');
+const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
+const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
+const imageEffectsContainer = imageUploadPopup.querySelector('.effects__list');
+const imageEffectValue = imageUploadPopup.querySelector('.effect-level__value');
 
 const effects = {
   'effect-chrome': {
@@ -120,4 +119,4 @@ imageEffectsContainer.addEventListener('click', (evt) => {
 
 changeImageEffectSlider.on('update', onChangeEffectSliderUpdate);
 
-export {imageEffectsSlider, changeImageEffectSlider, uploadedImagePreview};
+export {changeImageEffectSlider};

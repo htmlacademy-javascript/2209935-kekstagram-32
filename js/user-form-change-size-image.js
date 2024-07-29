@@ -1,10 +1,6 @@
-import { picturesContainer } from './thumbnails-painting';
-import { uploadedImagePreview } from './user-form';
-
-const smallerImageSizeButton = picturesContainer.querySelector('.scale__control--smaller');
-const biggerImageSizeButton = picturesContainer.querySelector('.scale__control--bigger');
-const changeImageSizeInput = picturesContainer.querySelector('.scale__control--value');
-const changeSizeButtonsContainer = picturesContainer.querySelector('.img-upload__scale');
+const imageUploadPopup = document.querySelector('.img-upload__overlay');
+const changeImageSizeInput = imageUploadPopup.querySelector('.scale__control--value');
+const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
 
 function changeImageSize (element) {
   const imageSizeValueNumber = parseInt(changeImageSizeInput.value, 10);
@@ -23,4 +19,4 @@ function changeImageSize (element) {
   uploadedImagePreview.style.transform = `scale(${imageSizeCurrentValue / 100})`;
 }
 
-export {smallerImageSizeButton, biggerImageSizeButton, changeImageSize, changeSizeButtonsContainer};
+export {changeImageSize};

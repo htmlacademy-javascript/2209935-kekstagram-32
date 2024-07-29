@@ -1,16 +1,20 @@
-import { picturesContainer } from './thumbnails-painting.js';
 import { isPressedKeyEscape } from './utils.js';
 import { pristine, onUserFormSubmitClick } from './validation-user-form.js';
-import {changeImageSize, changeSizeButtonsContainer} from './user-form-change-size-image.js';
-import { uploadedImagePreview, imageEffectsSlider, changeImageEffectSlider } from './image-effects.js';
+import {changeImageSize} from './user-form-change-size-image.js';
+import {changeImageEffectSlider } from './image-effects.js';
 
-const imageUploadButton = picturesContainer.querySelector('.img-upload__input');
-const imageUploadPopup = picturesContainer.querySelector('.img-upload__overlay');
+const imageUploadButton = document.querySelector('.img-upload__input');
+const imageUploadPopup = document.querySelector('.img-upload__overlay');
 const popupCloseButton = imageUploadPopup.querySelector('.img-upload__cancel');
 const effectsPrewiewImage = imageUploadPopup.querySelectorAll('.effects__preview');
-const uploadImageForm = picturesContainer.querySelector('.img-upload__form');
+const uploadImageForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
+const bodyElement = document.querySelector('body');
+const changeSizeButtonsContainer = imageUploadPopup.querySelector('.img-upload__scale');
+const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
+const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
+const inputEffectNone = imageUploadPopup.querySelector('#effect-none');
 
 function openEditImagePopup() {
   imageUploadPopup.classList.remove('hidden');
@@ -43,9 +47,11 @@ function closeEditImagePopup () {
   document.body.classList.remove('modal-open');
   popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-  uploadImageForm.removeEventListener('submit', onUserFormSubmitClick);
   pristine.reset();
   changeImageEffectSlider.reset();
+  hashtagInput.value = '';
+  commentInput.value = '';
+  inputEffectNone.checked = true;
 }
 
 function onEditImagePopupChange (evt) {
@@ -68,6 +74,60 @@ function onEditImagePopupCloseButtonKeydown(evt) {
   }
 }
 
+function removeDomElement(element) {
+  element.remove();
+}
+
+function loadDataFromUserSucces () {
+  const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
+  bodyElement.appendChild(successMessageTemplate);
+
+  const successMessage = bodyElement.querySelector('.success');
+  const successMessageCloseButton = successMessage.querySelector('.success__button');
+
+  successMessageCloseButton.addEventListener('click', () => {
+    removeDomElement(successMessage);
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isPressedKeyEscape(evt)) {
+      removeDomElement(successMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    removeDomElement(successMessage);
+  });
+
+  closeEditImagePopup();
+}
+
+function loadDataFromUserError () {
+  const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
+  bodyElement.appendChild(errorMessageTemplate);
+
+  const errorMessage = bodyElement.querySelector('.error');
+  const errorMessageCloseButton = errorMessage.querySelector('.error__button');
+
+  errorMessageCloseButton.addEventListener('click', () => {
+    removeDomElement(errorMessage);
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isPressedKeyEscape(evt)) {
+      removeDomElement(errorMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    removeDomElement(errorMessage);
+  });
+}
+
 imageUploadButton.addEventListener('change', onEditImagePopupChange);
 
-export {uploadImageForm, hashtagInput, commentInput, imageUploadPopup, uploadedImagePreview, closeEditImagePopup };
+onUserFormSubmitClick(loadDataFromUserSucces, loadDataFromUserError);
+
+export {closeEditImagePopup };

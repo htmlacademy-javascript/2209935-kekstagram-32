@@ -28,4 +28,4 @@ picturesContainer.addEventListener('click', (evt) => {
   }
 });
 
-export {picturesContainer, painPosts};
+export {painPosts};
