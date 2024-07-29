@@ -1,9 +1,6 @@
-import { sendData } from './api.js';
-
 const uploadImageForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
-const submitButton = uploadImageForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
@@ -48,23 +45,6 @@ function validateCommentInput (value) {
   return value.length < 140;
 }
 
-function onUserFormSubmitClick (onSuccess, onError) {
-
-  uploadImageForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    if (pristine.validate()) {
-      submitButton.disabled = true;
-      const formData = new FormData(evt.target);
-      sendData(formData)
-        .then(onSuccess)
-        .catch(onError)
-        .finally(() => {
-          submitButton.disabled = false;
-        });
-    }
-  });
-}
-
 const validatorCorrect = createValidator('correct');
 const validatorOverCount = createValidator('overcount');
 const validatorDuplicate = createValidator('duplicate');
@@ -74,4 +54,4 @@ pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повт
 
 pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
 
-export {pristine, onUserFormSubmitClick};
+export {pristine};
