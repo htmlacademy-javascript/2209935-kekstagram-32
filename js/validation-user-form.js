@@ -52,10 +52,10 @@ function onUserFormSubmitClick (onSuccess, onError) {
 
   uploadImageForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    submitButton.disabled = true;
     if (pristine.validate()) {
-
-      sendData(new FormData(evt.target))
+      submitButton.disabled = true;
+      const formData = new FormData(evt.target);
+      sendData(formData)
         .then(onSuccess)
         .catch(onError)
         .finally(() => {
