@@ -13,4 +13,5 @@ getData()
     postsArray = posts;
     paintPosts(posts);
   });
+
 export {postsArray};
