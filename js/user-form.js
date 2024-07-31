@@ -30,16 +30,12 @@ function onUserFormSubmitClick (evt) {
   }
 }
 
-function isImage (element) {
-  const fileName = element.name.toLowerCase();
-
-  return FILE_TYPES.some((item) => fileName.endsWith(item));
-}
-
 function openEditImagePopup() {
 
   const file = imageUploadButton.files[0];
-  if (isImage(file)) {
+  const fileName = file.name.toLowerCase();
+
+  if (FILE_TYPES.some((item) => fileName.endsWith(item))) {
     const imageUrl = URL.createObjectURL(file);
     uploadedImagePreview.src = imageUrl;
 
