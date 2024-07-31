@@ -1,26 +1,24 @@
-import { picturesContainer } from './thumbnails-painting';
-import { uploadedImagePreview } from './user-form';
+const imageUploadPopup = document.querySelector('.img-upload__overlay');
+const changeImageSizeInput = imageUploadPopup.querySelector('.scale__control--value');
+const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
 
-const smallerImageSizeButton = picturesContainer.querySelector('.scale__control--smaller');
-const biggerImageSizeButton = picturesContainer.querySelector('.scale__control--bigger');
-const changeImageSizeInput = picturesContainer.querySelector('.scale__control--value');
-const changeSizeButtonsContainer = picturesContainer.querySelector('.img-upload__scale');
+function changeImageSizeGenerator () {
+  let imageSizeCurrentValue = parseInt(changeImageSizeInput.value, 10);
 
-function changeImageSize (element) {
-  const imageSizeValueNumber = parseInt(changeImageSizeInput.value, 10);
-  let imageSizeCurrentValue = imageSizeValueNumber;
-
-  if (element.classList.contains('scale__control--smaller')) {
-    if (imageSizeValueNumber >= 50 && imageSizeValueNumber <= 100) {
-      imageSizeCurrentValue = imageSizeValueNumber - 25;
+  return (element) => {
+    if (element.classList.contains('scale__control--smaller')) {
+      if (imageSizeCurrentValue >= 50 && imageSizeCurrentValue <= 100) {
+        imageSizeCurrentValue -= 25;
+      }
+    } else if (element.classList.contains('scale__control--bigger')) {
+      if (imageSizeCurrentValue >= 0 && imageSizeCurrentValue < 100) {
+        imageSizeCurrentValue += 25;
+      }
     }
-  } else if (element.classList.contains('scale__control--bigger')) {
-    if (imageSizeValueNumber >= 0 && imageSizeValueNumber < 100) {
-      imageSizeCurrentValue = imageSizeValueNumber + 25;
-    }
-  }
-  changeImageSizeInput.value = `${imageSizeCurrentValue}%`;
-  uploadedImagePreview.style.transform = `scale(${imageSizeCurrentValue / 100})`;
+    changeImageSizeInput.value = `${imageSizeCurrentValue}%`;
+    uploadedImagePreview.style.transform = `scale(${imageSizeCurrentValue / 100})`;
+  };
+
 }
 
-export {smallerImageSizeButton, biggerImageSizeButton, changeImageSize, changeSizeButtonsContainer};
+export {changeImageSizeGenerator};
