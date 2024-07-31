@@ -1,7 +1,5 @@
 import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
 
-let hashtagsArray = [];
-
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
@@ -13,51 +11,48 @@ function onUserFormSubmitClick (evt) {
   pristine.validate();
 }
 
-function checkDuplicateHashtags (array) {
-  const set = new Set(array);
-  return set.size !== array.length;
-}
+const createValidator = (type) => {
+  let hashtagsArray = [];
 
-function stringToArray (string) {
-  const noTrimString = string.trim().toLowerCase();
-  const array = noTrimString.split(' ');
-  return array;
-}
-
-function validateHashTagsCorrect (value) {
-  if (value.length === 0) {
-    return true;
-  }
-  hashtagsArray = stringToArray(value);
-  for (let i = 0; i < hashtagsArray.length; i++) {
-    if (!/^#[a-zа-яё0-9]{1,19}$/.test(hashtagsArray[i])) {
-      return false;
+  return (value) => {
+    hashtagsArray = value.trim().toLowerCase().split(' ');
+    const set = new Set(hashtagsArray);
+    switch (type) {
+      case 'correct':
+        if (value.length === 0) {
+          return true;
+        }
+        hashtagsArray = value.trim().toLowerCase().split(' ');
+        for (let i = 0; i < hashtagsArray.length; i++) {
+          if (!/^#[a-zа-яё0-9]{1,19}$/.test(hashtagsArray[i])) {
+            return false;
+          }
+        }
+        return true;
+      case 'overcount':
+        if(hashtagsArray.length > 5) {
+          return false;
+        }
+        return true;
+      case 'duplicate':
+        if (set.size !== hashtagsArray.length) {
+          return false;
+        }
+        return true;
     }
-  }
-  return true;
-}
-
-function validateHashTagsTooMuch () {
-  if(hashtagsArray.length > 5) {
-    return false;
-  }
-  return true;
-}
-
-function validateHashTagsDuplicate () {
-  if (checkDuplicateHashtags(hashtagsArray)) {
-    return false;
-  }
-  return true;
-}
+  };
+};
 
 function validateCommentInput (value) {
   return value.length < 140;
 }
 
-pristine.addValidator(hashtagInput, validateHashTagsCorrect, 'Введен невалидный хештег');
-pristine.addValidator(hashtagInput, validateHashTagsTooMuch, 'Превышено количество хештегов');
-pristine.addValidator(hashtagInput, validateHashTagsDuplicate, 'Хештеги повторяются');
+const validatorCorrect = createValidator('correct');
+const validatorOverCount = createValidator('overcount');
+const validatorDuplicate = createValidator('duplicate');
+pristine.addValidator(hashtagInput, validatorCorrect, 'Введен невалидный хештег');
+pristine.addValidator(hashtagInput, validatorOverCount, 'Превышено количество хештегов');
+pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повторяются');
 
 pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
 
