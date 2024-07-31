@@ -1,4 +1,6 @@
-import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
+const uploadImageForm = document.querySelector('.img-upload__form');
+const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
+const commentInput = uploadImageForm.querySelector('.text__description');
 
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
