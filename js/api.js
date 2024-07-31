@@ -90,4 +90,4 @@ const load = (route, method, onError, body, onSuccess) =>
 const getData = () => load(Route.GET_DATA, Method.GET, loadDataFromServerError);
 const sendData = (body) => load(Route.SEND_DATA, Method.POST, loadDataFromUserError, body, loadDataFromUserSucces);
 
-export {getData, sendData};
+export {getData, sendData, loadDataFromUserError};

@@ -2,7 +2,9 @@ import { isPressedKeyEscape } from './utils.js';
 import { pristine } from './validation-user-form.js';
 import {changeImageSizeGenerator} from './user-form-change-size-image.js';
 import {changeImageEffectSlider } from './image-effects.js';
-import { sendData } from './api.js';
+import { sendData, loadDataFromUserError } from './api.js';
+
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const imageUploadButton = document.querySelector('.img-upload__input');
 const imageUploadPopup = document.querySelector('.img-upload__overlay');
@@ -28,15 +30,28 @@ function onUserFormSubmitClick (evt) {
   }
 }
 
+function isImage (element) {
+  const fileName = element.name.toLowerCase();
+
+  return FILE_TYPES.some((item) => fileName.endsWith(item));
+}
+
 function openEditImagePopup() {
+
+  const file = imageUploadButton.files[0];
+  if (isImage(file)) {
+    const imageUrl = URL.createObjectURL(file);
+    uploadedImagePreview.src = imageUrl;
+
+    effectsPrewiewImage.forEach((item) => {
+      item.style.backgroundImage = `url(${imageUrl})`;
+    });
+  } else {
+    return loadDataFromUserError();
+  }
+
   imageUploadPopup.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  const imageUrl = URL.createObjectURL(imageUploadButton.files[0]);
-  uploadedImagePreview.src = imageUrl;
-  effectsPrewiewImage.forEach((item) => {
-    item.style.backgroundImage = `url(${imageUrl})`;
-  });
-
   popupCloseButton.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
