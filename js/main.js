@@ -6,12 +6,8 @@ import './user-form.js';
 import './user-form-change-size-image.js';
 import './image-effects.js';
 
-let postsArray = [];
-
 getData()
   .then((posts) => {
-    postsArray = posts;
     paintPosts(posts);
   });
 
-export {postsArray};

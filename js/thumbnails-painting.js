@@ -18,14 +18,15 @@ function paintPosts(elements) { // отрисовывает миниатюры �
     postsFragment.appendChild(element);
   });
   picturesContainer.appendChild(postsFragment);
-}
 
-// вешаем обработчик события клик на контейнере миниатюр
-picturesContainer.addEventListener('click', (evt) => {
-  const target = evt.target.closest('.picture');
-  if (target) {
-    onThumbnailClick(target.getAttribute('data-postid'));
-  }
-});
+  // вешаем обработчик события клик на контейнере миниатюр
+  picturesContainer.addEventListener('click', (evt) => {
+    const target = evt.target.closest('.picture');
+    if (target) {
+      onThumbnailClick(elements[target.getAttribute('data-postid')]);
+    }
+  });
+
+}
 
 export {paintPosts};
