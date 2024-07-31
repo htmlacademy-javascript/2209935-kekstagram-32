@@ -1,9 +1,6 @@
 import { onThumbnailClick } from './full-post-painting.js'; // импортируем функцию для обработчика события клик по контейнеру миниатюр
 import { createRandomNumberFromRangeGenerator } from './utils.js';
 
-// записываем в переменные необходимые узлы DOM
-const picturesContainer = document.querySelector('.pictures');
-const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 function setCurrentFilterButton (element) {
   const currentFilterButton = document.querySelector('.img-filters__button--active');
@@ -11,14 +8,13 @@ function setCurrentFilterButton (element) {
   element.classList.add('img-filters__button--active');
 }
 
-const getMostDiscussed = (array) => {
-  
-}
-
 function paintPosts(elements, flag, button) { // отрисовывает миниатюры постов
+  const picturesContainer = document.querySelector('.pictures');
+  const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const postsFragment = document.createDocumentFragment();
 
   const pictures = document.querySelectorAll('.picture');
+  picturesContainer.removeEventListener('click', onPicturesContainerClick);
   let filteredPosts = [];
 
   if (flag === 'filter-random') {
@@ -26,10 +22,13 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
     for (let i = 0; i < 10; i++) {
       filteredPosts[i] = elements[randomNumber()];
     }
+	console.log(filteredPosts);
   } else if (flag === 'filter-default') {
     filteredPosts = elements;
+	console.log(filteredPosts);
   } else if (flag === 'filter-discussed') {
-    filteredPosts = getMostDiscussed(elements);
+    filteredPosts = elements.slice().sort((a, b) => b.comments.length - a.comments.length);
+	console.log(filteredPosts);
   }
   setCurrentFilterButton(button);
 
@@ -49,13 +48,15 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   });
   picturesContainer.appendChild(postsFragment);
 
-  // вешаем обработчик события клик на контейнере миниатюр
-  picturesContainer.addEventListener('click', (evt) => {
+  function onPicturesContainerClick (evt) {
     const target = evt.target.closest('.picture');
     if (target) {
-      onThumbnailClick(filteredPosts[target.getAttribute('data-postid')]);
+      onThumbnailClick(elements[target.getAttribute('data-postid')]);
     }
-  });
+  }
+
+  // вешаем обработчик события клик на контейнере миниатюр
+  picturesContainer.addEventListener('click', onPicturesContainerClick);
 
 }
 
