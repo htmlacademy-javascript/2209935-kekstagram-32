@@ -4,7 +4,7 @@ import { onThumbnailClick } from './full-post-painting.js'; // импортир�
 const picturesContainer = document.querySelector('.pictures');
 const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-function painPosts(elements) { // отрисовывает миниатюры постов
+function paintPosts(elements) { // отрисовывает миниатюры постов
   const postsFragment = document.createDocumentFragment();
 
   elements.forEach(({id, url, description, likes, comments}) => {
@@ -28,4 +28,4 @@ picturesContainer.addEventListener('click', (evt) => {
   }
 });
 
-export {painPosts};
+export {paintPosts};

@@ -1,4 +1,4 @@
-import { isPressedKeyEscape } from './utils.js';
+import { isPressedKeyEscape, removeDomElement } from './utils.js';
 import { closeEditImagePopup } from './user-form.js';
 
 const BASE_URL = 'https://32.javascript.htmlacademy.pro/kekstagram';
@@ -14,10 +14,6 @@ const Method = {
 
 const bodyElement = document.querySelector('body');
 const SHOW_ERROR_MESSAGE_TIME = 5000;
-
-function removeDomElement(element) {
-  element.remove();
-}
 
 function loadDataFromUserSucces () {
   const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');

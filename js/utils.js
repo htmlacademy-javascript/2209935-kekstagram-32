@@ -1,3 +1,7 @@
 const isPressedKeyEscape = (evt) => evt.key === 'Escape';
 
-export{isPressedKeyEscape};
+function removeDomElement(element) {
+  element.remove();
+}
+
+export{isPressedKeyEscape, removeDomElement};
