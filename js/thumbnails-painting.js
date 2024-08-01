@@ -1,6 +1,15 @@
 import { onThumbnailClick } from './full-post-painting.js'; // импортируем функцию для обработчика события клик по контейнеру миниатюр
 import { createRandomNumberFromRangeGenerator } from './utils.js';
 
+const picturesContainer = document.querySelector('.pictures');
+
+const filters = {
+  'filter-default': {
+    paint() {
+      
+    }
+  }
+}
 
 function setCurrentFilterButton (element) {
   const currentFilterButton = document.querySelector('.img-filters__button--active');
@@ -9,11 +18,19 @@ function setCurrentFilterButton (element) {
 }
 
 function paintPosts(elements, flag, button) { // отрисовывает миниатюры постов
-  const picturesContainer = document.querySelector('.pictures');
+  const pictures = document.querySelectorAll('.picture');
+  pictures.forEach((element) => element.remove());
+
   const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const postsFragment = document.createDocumentFragment();
 
-  const pictures = document.querySelectorAll('.picture');
+  function onPicturesContainerClick(evt) {
+    const target = evt.target.closest('.picture');
+    if (target) {
+      onThumbnailClick(elements[target.getAttribute('data-postid')]);
+    }
+  }
+
   picturesContainer.removeEventListener('click', onPicturesContainerClick);
   let filteredPosts = [];
 
@@ -32,10 +49,6 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   }
   setCurrentFilterButton(button);
 
-  for (let i = 0; i < pictures.length; i++) {
-    pictures[i].remove();
-  }
-
   filteredPosts.forEach(({id, url, description, likes, comments}) => {
     const element = postTemplate.cloneNode(true);
     const postPicture = element.querySelector('.picture__img');
@@ -48,16 +61,7 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   });
   picturesContainer.appendChild(postsFragment);
 
-  function onPicturesContainerClick (evt) {
-    const target = evt.target.closest('.picture');
-    if (target) {
-      onThumbnailClick(filteredPosts[target.getAttribute('data-postid')]);
-    }
-  }
-
-  // вешаем обработчик события клик на контейнере миниатюр
   picturesContainer.addEventListener('click', onPicturesContainerClick);
-
 }
 
 export {paintPosts};

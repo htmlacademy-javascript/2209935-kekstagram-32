@@ -59,8 +59,6 @@ const paintComments = (comments) => {
   const workVersionComments = structuredClone(comments);
   let shownCommentsCount = 0; // переменная отражает число отображаемых комментариев
 
-  commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
-
   return () => {
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
       shownCommentsCount += workVersionComments.length;
@@ -80,6 +78,8 @@ const paintComments = (comments) => {
       commentFragment.appendChild(comment);
       hideCommentsLoaderButton(workVersionComments);
     });
+    console.log('отрисовал');
+    commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
     return commentFragment;
   };
 };
