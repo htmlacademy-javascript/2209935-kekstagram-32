@@ -1,5 +1,4 @@
-import { onThumbnailClick } from './full-post-painting.js';
-import { filterPosts } from './filtration.js';
+import { filterPosts } from './filtration-posts.js';
 
 const picturesContainer = document.querySelector('.pictures');
 
@@ -9,18 +8,7 @@ function setCurrentFilterButton (element) {
   element.classList.add('img-filters__button--active');
 }
 
-function onPicturesContainerClickGenerator(elements) {
-  return (evt) => {
-    const target = evt.target.closest('.picture');
-    if (target) {
-      onThumbnailClick(elements[target.getAttribute('data-postid')]);
-    }
-  };
-}
-
 function paintPosts(elements, filter) { // отрисовывает миниатюры постов
-
-  const onPicturesContainerClick = onPicturesContainerClickGenerator(elements);
 
   const pictures = document.querySelectorAll('.picture');
   pictures.forEach((element) => element.remove());
@@ -43,10 +31,6 @@ function paintPosts(elements, filter) { // отрисовывает миниат
     postsFragment.appendChild(element);
   });
   picturesContainer.appendChild(postsFragment);
-
-  picturesContainer.addEventListener('click', onPicturesContainerClick);
-
-  return onPicturesContainerClick;
 }
 
-export {paintPosts, onPicturesContainerClickGenerator};
+export {paintPosts};

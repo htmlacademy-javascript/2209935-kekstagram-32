@@ -19,7 +19,7 @@ const onFilterClick = (cb) => {
   filterContainer.addEventListener('click', (evt) => {
     const target = evt.target.closest('.img-filters__button');
     if (target) {
-      cb(target.getAttribute('id'), target);
+      cb(target.getAttribute('id'));
     }
   });
 };

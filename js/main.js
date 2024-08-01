@@ -1,12 +1,12 @@
 import { getData } from './api.js';
 import { paintPosts } from './thumbnails-painting.js';
-import './full-post-painting.js';
+import { onThumbnailClick } from './full-post-painting.js';
 import './validation-user-form.js';
 import './user-form.js';
 import './user-form-change-size-image.js';
 import './image-effects.js';
 import { debounce} from './utils.js';
-import { onFilterClick } from './filtration.js';
+import { onFilterClick } from './filtration-posts.js';
 
 const RERENDER_DELAY = 500;
 
@@ -17,10 +17,15 @@ const picturesContainer = document.querySelector('.pictures');
 
 getData()
   .then((posts) => {
-    let eventFunction = paintPosts(posts, currentButton.getAttribute('id'));
-    onFilterClick(debounce((filter, activeButton) => {
-      picturesContainer.removeEventListener('click', eventFunction);
-      eventFunction = paintPosts(posts, activeButton.getAttribute('id'));
+    picturesContainer.addEventListener('click', (evt) => {
+      const target = evt.target.closest('.picture');
+      if (target) {
+        onThumbnailClick(posts[target.getAttribute('data-postid')]);
+      }
+    });
+    paintPosts(posts, currentButton.getAttribute('id'));
+    onFilterClick(debounce((filter) => {
+      paintPosts(posts, filter);
     }, RERENDER_DELAY));
   });
 
