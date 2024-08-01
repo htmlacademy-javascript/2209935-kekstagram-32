@@ -1,4 +1,5 @@
 const filterContainer = document.querySelector('.img-filters');
+const picturesContainer = document.querySelector('.pictures');
 
 const getRandomInteger = (min, max) => { // функция генерации случайного целого числа из диапазона
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -30,10 +31,11 @@ function removeDomElement(element) {
   element.remove();
 }
 
-const debounce = (callback, timeoutDelay) => {
+const debounce = (callback, timeoutDelay, event) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
+    picturesContainer.removeEventListener('click', event);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };

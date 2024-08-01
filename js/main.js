@@ -16,10 +16,10 @@ const picturesContainer = document.querySelector('.pictures');
 
 getData()
   .then((posts) => {
-    paintPosts(posts, 'filter-default', currentButton);
+    let eventFunction = paintPosts(posts, 'filter-default', currentButton);
     onFilterClick(debounce((filter, activeButton) => {
-      const eventFunction = paintPosts(posts, filter, activeButton);
       picturesContainer.removeEventListener('click', eventFunction);
+      eventFunction = paintPosts(posts, filter, activeButton);
     }, RERENDER_DELAY));
   });
 
