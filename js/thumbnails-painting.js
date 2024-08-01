@@ -51,7 +51,7 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   function onPicturesContainerClick (evt) {
     const target = evt.target.closest('.picture');
     if (target) {
-      onThumbnailClick(elements[target.getAttribute('data-postid')]);
+      onThumbnailClick(filteredPosts[target.getAttribute('data-postid')]);
     }
   }
 
