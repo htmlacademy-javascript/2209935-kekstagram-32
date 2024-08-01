@@ -78,7 +78,6 @@ const paintComments = (comments) => {
       commentFragment.appendChild(comment);
       hideCommentsLoaderButton(workVersionComments);
     });
-    console.log('отрисовал');
     commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
     return commentFragment;
   };

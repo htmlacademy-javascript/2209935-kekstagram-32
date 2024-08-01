@@ -33,22 +33,24 @@ function setCurrentFilterButton (element) {
   element.classList.add('img-filters__button--active');
 }
 
+function onPicturesContainerClickGenerator(elements) {
+  return (evt) => {
+    const target = evt.target.closest('.picture');
+    if (target) {
+      onThumbnailClick(elements[target.getAttribute('data-postid')]);
+    }
+  };
+}
+
 function paintPosts(elements, flag, button) { // отрисовывает миниатюры постов
-  console.log(elements, flag, button);
+
+  const onPicturesContainerClick = onPicturesContainerClickGenerator(elements);
+
   const pictures = document.querySelectorAll('.picture');
   pictures.forEach((element) => element.remove());
 
   const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const postsFragment = document.createDocumentFragment();
-
-  function onPicturesContainerClick(evt) {
-    const target = evt.target.closest('.picture');
-    if (target) {
-      onThumbnailClick(elements[target.getAttribute('data-postid')]);
-    }
-  }
-
-  picturesContainer.removeEventListener('click', onPicturesContainerClick);
 
   const filteredPosts = filters[flag].paint(elements);
 
@@ -67,6 +69,8 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   picturesContainer.appendChild(postsFragment);
 
   picturesContainer.addEventListener('click', onPicturesContainerClick);
+
+  return onPicturesContainerClick;
 }
 
-export {paintPosts};
+export {paintPosts, onPicturesContainerClickGenerator};
