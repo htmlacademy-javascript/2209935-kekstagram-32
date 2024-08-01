@@ -5,11 +5,27 @@ const picturesContainer = document.querySelector('.pictures');
 
 const filters = {
   'filter-default': {
-    paint() {
-      
+    paint: function (input) {
+      return input;
+    }
+  },
+  'filter-random': {
+    paint: function (input) {
+      const randomNumber = createRandomNumberFromRangeGenerator(0, 24);
+      const output = [];
+      for (let i = 0; i < 10; i++) {
+        output[i] = input[randomNumber()];
+      }
+      return output;
+    }
+  },
+  'filter-discussed': {
+    paint: function (input) {
+      const output = input.slice().sort((a, b) => b.comments.length - a.comments.length);
+      return output;
     }
   }
-}
+};
 
 function setCurrentFilterButton (element) {
   const currentFilterButton = document.querySelector('.img-filters__button--active');
@@ -18,6 +34,7 @@ function setCurrentFilterButton (element) {
 }
 
 function paintPosts(elements, flag, button) { // отрисовывает миниатюры постов
+  console.log(elements, flag, button);
   const pictures = document.querySelectorAll('.picture');
   pictures.forEach((element) => element.remove());
 
@@ -32,21 +49,9 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   }
 
   picturesContainer.removeEventListener('click', onPicturesContainerClick);
-  let filteredPosts = [];
 
-  if (flag === 'filter-random') {
-    const randomNumber = createRandomNumberFromRangeGenerator(0, 24);
-    for (let i = 0; i < 10; i++) {
-      filteredPosts[i] = elements[randomNumber()];
-    }
-	console.log(filteredPosts);
-  } else if (flag === 'filter-default') {
-    filteredPosts = elements;
-	console.log(filteredPosts);
-  } else if (flag === 'filter-discussed') {
-    filteredPosts = elements.slice().sort((a, b) => b.comments.length - a.comments.length);
-	console.log(filteredPosts);
-  }
+  const filteredPosts = filters[flag].paint(elements);
+
   setCurrentFilterButton(button);
 
   filteredPosts.forEach(({id, url, description, likes, comments}) => {

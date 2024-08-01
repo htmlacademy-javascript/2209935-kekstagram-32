@@ -5,6 +5,9 @@ import './validation-user-form.js';
 import './user-form.js';
 import './user-form-change-size-image.js';
 import './image-effects.js';
+import { debounce } from './utils.js';
+
+const RERENDER_DELAY = 500;
 
 const filterContainer = document.querySelector('.img-filters');
 const currentButton = filterContainer.querySelector('.img-filters__button--active');
@@ -23,6 +26,6 @@ const onFilterClick = (cb) => {
 getData()
   .then((posts) => {
     paintPosts(posts, 'filter-default', currentButton);
-    onFilterClick((filter, activeButton) => paintPosts(posts, filter, activeButton));
+    onFilterClick(debounce((filter, activeButton) => paintPosts(posts, filter, activeButton), RERENDER_DELAY));
   });
 
