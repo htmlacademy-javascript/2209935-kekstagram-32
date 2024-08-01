@@ -739,12 +739,12 @@ main {
   border-radius: 4px;
 }
 
-.img-upload__submit:hover,
-.img-upload__submit:focus {
+.img-upload__submit:not(:disabled):hover,
+.img-upload__submit:not(:disabled):focus {
   background-color: rgba(255, 231, 82, 0.4);
 }
 
-.img-upload__submit:active {
+.img-upload__submit:not(:disabled):active {
   -webkit-transform: translateY(1px);
       -ms-transform: translateY(1px);
           transform: translateY(1px);

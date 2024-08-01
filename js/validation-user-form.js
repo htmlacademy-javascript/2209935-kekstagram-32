@@ -1,4 +1,6 @@
-import { uploadImageForm, hashtagInput, commentInput } from './user-form.js';
+const uploadImageForm = document.querySelector('.img-upload__form');
+const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
+const commentInput = uploadImageForm.querySelector('.text__description');
 
 const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
@@ -6,10 +8,6 @@ const pristine = new Pristine(uploadImageForm, {
   errorTextParent: 'img-upload__field-wrapper'
 });
 
-function onUserFormSubmitClick (evt) {
-  evt.preventDefault();
-  pristine.validate();
-}
 
 const createValidator = (type) => {
   let hashtagsArray = [];
@@ -56,6 +54,4 @@ pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повт
 
 pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
 
-uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
-
-export {pristine, onUserFormSubmitClick};
+export {pristine};
