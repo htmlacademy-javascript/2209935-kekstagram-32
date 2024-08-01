@@ -1,31 +1,7 @@
-import { onThumbnailClick } from './full-post-painting.js'; // импортируем функцию для обработчика события клик по контейнеру миниатюр
-import { createRandomNumberFromRangeGenerator } from './utils.js';
+import { onThumbnailClick } from './full-post-painting.js';
+import { filterPosts } from './filtration.js';
 
 const picturesContainer = document.querySelector('.pictures');
-
-const filters = {
-  'filter-default': {
-    paint: function (input) {
-      return input;
-    }
-  },
-  'filter-random': {
-    paint: function (input) {
-      const randomNumber = createRandomNumberFromRangeGenerator(0, 24);
-      const output = [];
-      for (let i = 0; i < 10; i++) {
-        output[i] = input[randomNumber()];
-      }
-      return output;
-    }
-  },
-  'filter-discussed': {
-    paint: function (input) {
-      const output = input.slice().sort((a, b) => b.comments.length - a.comments.length);
-      return output;
-    }
-  }
-};
 
 function setCurrentFilterButton (element) {
   const currentFilterButton = document.querySelector('.img-filters__button--active');
@@ -42,7 +18,7 @@ function onPicturesContainerClickGenerator(elements) {
   };
 }
 
-function paintPosts(elements, flag, button) { // отрисовывает миниатюры постов
+function paintPosts(elements, filter) { // отрисовывает миниатюры постов
 
   const onPicturesContainerClick = onPicturesContainerClickGenerator(elements);
 
@@ -52,9 +28,9 @@ function paintPosts(elements, flag, button) { // отрисовывает мин
   const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const postsFragment = document.createDocumentFragment();
 
-  const filteredPosts = filters[flag].paint(elements);
+  const filteredPosts = filterPosts (elements, filter);
 
-  setCurrentFilterButton(button);
+  setCurrentFilterButton(document.querySelector(`.img-filters__button[id = ${filter}]`));
 
   filteredPosts.forEach(({id, url, description, likes, comments}) => {
     const element = postTemplate.cloneNode(true);

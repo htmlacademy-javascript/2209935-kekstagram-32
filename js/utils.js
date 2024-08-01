@@ -1,4 +1,3 @@
-const filterContainer = document.querySelector('.img-filters');
 const picturesContainer = document.querySelector('.pictures');
 
 const getRandomInteger = (min, max) => { // функция генерации случайного целого числа из диапазона
@@ -40,14 +39,4 @@ const debounce = (callback, timeoutDelay, event) => {
   };
 };
 
-const onFilterClick = (cb) => {
-  filterContainer.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.img-filters__button');
-    if (target) {
-      cb(target.getAttribute('id'), target);
-    }
-  });
-};
-
-
-export{isPressedKeyEscape, removeDomElement, createRandomNumberFromRangeGenerator, debounce, onFilterClick};
+export{isPressedKeyEscape, removeDomElement, createRandomNumberFromRangeGenerator, debounce};

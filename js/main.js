@@ -5,7 +5,8 @@ import './validation-user-form.js';
 import './user-form.js';
 import './user-form-change-size-image.js';
 import './image-effects.js';
-import { debounce, onFilterClick } from './utils.js';
+import { debounce} from './utils.js';
+import { onFilterClick } from './filtration.js';
 
 const RERENDER_DELAY = 500;
 
@@ -16,10 +17,10 @@ const picturesContainer = document.querySelector('.pictures');
 
 getData()
   .then((posts) => {
-    let eventFunction = paintPosts(posts, 'filter-default', currentButton);
+    let eventFunction = paintPosts(posts, currentButton.getAttribute('id'));
     onFilterClick(debounce((filter, activeButton) => {
       picturesContainer.removeEventListener('click', eventFunction);
-      eventFunction = paintPosts(posts, filter, activeButton);
+      eventFunction = paintPosts(posts, activeButton.getAttribute('id'));
     }, RERENDER_DELAY));
   });
 
