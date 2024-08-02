@@ -20,6 +20,7 @@ const submitButton = uploadImageForm.querySelector('.img-upload__submit');
 const bodyElement = document.querySelector('body');
 
 function loadDataFromUserSucces () {
+  closeEditImagePopup();
   const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
   bodyElement.appendChild(successMessageTemplate);
@@ -40,10 +41,21 @@ function loadDataFromUserSucces () {
   document.addEventListener('click', () => {
     removeDomElement(successMessage);
   });
-  closeEditImagePopup();
+}
+
+function onEditImagePopupCloseButtonKeydown(evt) {
+  if (isPressedKeyEscape(evt)) {
+    evt.preventDefault();
+    if (document.activeElement === hashtagInput || document.activeElement === commentInput) {
+      evt.stopPropagation();
+    } else {
+      closeEditImagePopup();
+    }
+  }
 }
 
 function loadDataFromUserError () {
+  document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
   bodyElement.appendChild(errorMessageTemplate);
@@ -58,6 +70,7 @@ function loadDataFromUserError () {
   document.addEventListener('keydown', (evt) => {
     if (isPressedKeyEscape(evt)) {
       removeDomElement(errorMessage);
+      document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
     }
   });
 
@@ -74,7 +87,7 @@ function onUserFormSubmitClick (evt) {
     const formData = new FormData(evt.target);
     sendData(formData)
       .then(loadDataFromUserSucces)
-      .then(loadDataFromUserError)
+      .catch(loadDataFromUserError)
       .finally(() => {
         submitButton.disabled = false;
       });
@@ -134,17 +147,6 @@ function onEditImagePopupChange (evt) {
 
 function onEditImagePopupCloseButtonClick() {
   closeEditImagePopup();
-}
-
-function onEditImagePopupCloseButtonKeydown(evt) {
-  if (isPressedKeyEscape(evt)) {
-    evt.preventDefault();
-    if (document.activeElement === hashtagInput || document.activeElement === commentInput) {
-      evt.stopPropagation();
-    } else {
-      closeEditImagePopup();
-    }
-  }
 }
 
 export {closeEditImagePopup, onEditImagePopupChange};

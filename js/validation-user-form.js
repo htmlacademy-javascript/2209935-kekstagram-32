@@ -13,14 +13,13 @@ const createValidator = (type) => {
   let hashtagsArray = [];
 
   return (value) => {
-    hashtagsArray = value.trim().toLowerCase().split(' ');
+    hashtagsArray = value.trim().toLowerCase().split(' ').filter((element) => element.trim() !== '');
     const set = new Set(hashtagsArray);
     switch (type) {
       case 'correct':
         if (value.length === 0) {
           return true;
         }
-        hashtagsArray = value.trim().toLowerCase().split(' ');
         for (let i = 0; i < hashtagsArray.length; i++) {
           if (!/^#[a-zа-яё0-9]{1,19}$/.test(hashtagsArray[i])) {
             return false;
