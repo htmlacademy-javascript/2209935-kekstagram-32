@@ -108,7 +108,6 @@ function onChangeEffectSliderUpdate () {
   imageEffectValue.value = currentSliderValue;
   if (currentSliderEffect !== 'effect-none') {
     uploadedImagePreview.style.filter = `${effects[currentSliderEffect].filter}(${currentSliderValue}${effects[currentSliderEffect].unit})`;
-    console.log('нарисовал');
   }
 }
 
@@ -118,5 +117,7 @@ imageEffectsContainer.addEventListener('click', (evt) => {
     onEffectItemClick(target);
   }
 });
+
+changeImageEffectSlider.on('update', onChangeEffectSliderUpdate);
 
 export {changeImageEffectSlider, onChangeEffectSliderUpdate};
