@@ -1,8 +1,8 @@
-import { isPressedKeyEscape } from './utils.js';
+import { isPressedKeyEscape, removeDomElement } from './utils.js';
 import { pristine } from './validation-user-form.js';
 import {changeImageSize} from './user-form-change-size-image.js';
 import {changeImageEffectSlider } from './image-effects.js';
-import { sendData, loadDataFromUserError } from './api.js';
+import { sendData } from './api.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -17,6 +17,55 @@ const changeSizeButtonsContainer = imageUploadPopup.querySelector('.img-upload__
 const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
 const imageEffectsSliderContainer = imageUploadPopup.querySelector('.img-upload__effect-level');
 const submitButton = uploadImageForm.querySelector('.img-upload__submit');
+const bodyElement = document.querySelector('body');
+
+function loadDataFromUserSucces () {
+  const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
+  bodyElement.appendChild(successMessageTemplate);
+
+  const successMessage = bodyElement.querySelector('.success');
+  const successMessageCloseButton = successMessage.querySelector('.success__button');
+
+  successMessageCloseButton.addEventListener('click', () => {
+    removeDomElement(successMessage);
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isPressedKeyEscape(evt)) {
+      removeDomElement(successMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    removeDomElement(successMessage);
+  });
+  closeEditImagePopup();
+}
+
+function loadDataFromUserError () {
+  const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
+  bodyElement.appendChild(errorMessageTemplate);
+
+  const errorMessage = bodyElement.querySelector('.error');
+  const errorMessageCloseButton = errorMessage.querySelector('.error__button');
+
+  errorMessageCloseButton.addEventListener('click', () => {
+    removeDomElement(errorMessage);
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isPressedKeyEscape(evt)) {
+      removeDomElement(errorMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    removeDomElement(errorMessage);
+  });
+}
+
 
 function onUserFormSubmitClick (evt) {
   evt.preventDefault();
@@ -24,6 +73,8 @@ function onUserFormSubmitClick (evt) {
     submitButton.disabled = true;
     const formData = new FormData(evt.target);
     sendData(formData)
+      .then(loadDataFromUserSucces)
+      .then(loadDataFromUserError)
       .finally(() => {
         submitButton.disabled = false;
       });

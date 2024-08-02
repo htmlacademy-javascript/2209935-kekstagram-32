@@ -9,7 +9,9 @@ import { onEditImagePopupChange } from './user-form.js';
 import './validation-user-form.js';
 
 const RERENDER_DELAY = 500;
+const SHOW_ERROR_MESSAGE_TIME = 5000;
 
+const bodyElement = document.querySelector('body');
 const filterForm = document.querySelector('.img-filters');
 const currentButton = filterForm.querySelector('.img-filters__button--active');
 const picturesContainer = document.querySelector('.pictures');
@@ -18,6 +20,16 @@ const imageUploadButton = document.querySelector('.img-upload__input');
 
 imageUploadButton.removeAttribute('disabled');
 imageUploadButton.addEventListener('change', onEditImagePopupChange);
+
+function loadDataFromServerError () {
+  const loadErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+  const errorMessage = loadErrorTemplate.cloneNode(true);
+  bodyElement.appendChild(errorMessage);
+  setTimeout(() => {
+    errorMessage.remove();
+  }, SHOW_ERROR_MESSAGE_TIME);
+}
+
 getData()
   .then((posts) => {
     filterForm.classList.remove('img-filters--inactive');
@@ -32,5 +44,6 @@ getData()
     onFilterClick(debounce((filter) => {
       paintPosts(posts, filter);
     }, RERENDER_DELAY));
-  });
+  })
+  .catch(loadDataFromServerError);
 
