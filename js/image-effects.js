@@ -108,6 +108,7 @@ function onChangeEffectSliderUpdate () {
   imageEffectValue.value = currentSliderValue;
   if (currentSliderEffect !== 'effect-none') {
     uploadedImagePreview.style.filter = `${effects[currentSliderEffect].filter}(${currentSliderValue}${effects[currentSliderEffect].unit})`;
+    console.log('нарисовал');
   }
 }
 

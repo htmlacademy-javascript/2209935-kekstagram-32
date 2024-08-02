@@ -71,10 +71,10 @@ function closeEditImagePopup () {
   popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   pristine.reset();
+  uploadImageForm.reset();
   changeImageEffectSlider.reset();
   uploadedImagePreview.style.removeProperty('transform');
   uploadedImagePreview.style.removeProperty('filter');
-  uploadImageForm.reset();
   changeSizeButtonsContainer.removeEventListener('click', onChangeImageSize);
 }
 

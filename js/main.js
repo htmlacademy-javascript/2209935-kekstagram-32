@@ -15,6 +15,9 @@ const currentButton = filterForm.querySelector('.img-filters__button--active');
 const picturesContainer = document.querySelector('.pictures');
 const imageUploadButton = document.querySelector('.img-upload__input');
 
+
+imageUploadButton.removeAttribute('disabled');
+imageUploadButton.addEventListener('change', onEditImagePopupChange);
 getData()
   .then((posts) => {
     filterForm.classList.remove('img-filters--inactive');
@@ -26,11 +29,8 @@ getData()
         onThumbnailClick(posts[target.getAttribute('data-postid')]);
       }
     });
-    imageUploadButton.addEventListener('change', onEditImagePopupChange);
     onFilterClick(debounce((filter) => {
       paintPosts(posts, filter);
     }, RERENDER_DELAY));
   });
-
-imageUploadButton.removeAttribute('disabled');
 
