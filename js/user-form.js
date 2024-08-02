@@ -1,7 +1,7 @@
 import { isPressedKeyEscape } from './utils.js';
 import { pristine } from './validation-user-form.js';
-import {changeImageSizeGenerator} from './user-form-change-size-image.js';
-import {changeImageEffectSlider } from './image-effects.js';
+import {changeImageSize} from './user-form-change-size-image.js';
+import {changeImageEffectSlider, onChangeEffectSliderUpdate } from './image-effects.js';
 import { sendData, loadDataFromUserError } from './api.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -30,6 +30,13 @@ function onUserFormSubmitClick (evt) {
   }
 }
 
+function onChangeImageSize (evt) {
+  const target = evt.target.closest('.scale__control');
+  if (target) {
+    changeImageSize(target);
+  }
+}
+
 function openEditImagePopup() {
 
   const file = imageUploadButton.files[0];
@@ -52,18 +59,10 @@ function openEditImagePopup() {
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
 
-  const changeImageSize = changeImageSizeGenerator();
-
-  changeSizeButtonsContainer.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.scale__control');
-    if (target) {
-      changeImageSize(target);
-    }
-  });
-
+  changeImageEffectSlider.on('update', onChangeEffectSliderUpdate);
   imageEffectsSliderContainer.classList.add('visually-hidden');
-  uploadedImagePreview.style.transform = 'scale(1)';
-  uploadedImagePreview.style.removeProperty('filter');
+
+  changeSizeButtonsContainer.addEventListener('click', onChangeImageSize);
 }
 
 function closeEditImagePopup () {
@@ -73,7 +72,10 @@ function closeEditImagePopup () {
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   pristine.reset();
   changeImageEffectSlider.reset();
+  uploadedImagePreview.style.removeProperty('transform');
+  uploadedImagePreview.style.removeProperty('filter');
   uploadImageForm.reset();
+  changeSizeButtonsContainer.removeEventListener('click', onChangeImageSize);
 }
 
 function onEditImagePopupChange (evt) {
@@ -96,6 +98,4 @@ function onEditImagePopupCloseButtonKeydown(evt) {
   }
 }
 
-imageUploadButton.addEventListener('change', onEditImagePopupChange);
-
-export {closeEditImagePopup };
+export {closeEditImagePopup, onEditImagePopupChange};

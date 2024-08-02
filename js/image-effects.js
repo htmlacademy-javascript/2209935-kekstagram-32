@@ -118,6 +118,4 @@ imageEffectsContainer.addEventListener('click', (evt) => {
   }
 });
 
-changeImageEffectSlider.on('update', onChangeEffectSliderUpdate);
-
-export {changeImageEffectSlider};
+export {changeImageEffectSlider, onChangeEffectSliderUpdate};
