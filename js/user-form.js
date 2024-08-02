@@ -15,7 +15,7 @@ const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
 const changeSizeButtonsContainer = imageUploadPopup.querySelector('.img-upload__scale');
 const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
-const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
+const imageEffectsSliderContainer = imageUploadPopup.querySelector('.img-upload__effect-level');
 const submitButton = uploadImageForm.querySelector('.img-upload__submit');
 
 function onUserFormSubmitClick (evt) {
@@ -61,7 +61,7 @@ function openEditImagePopup() {
     }
   });
 
-  imageEffectsSlider.classList.add('visually-hidden');
+  imageEffectsSliderContainer.classList.add('visually-hidden');
   uploadedImagePreview.style.transform = 'scale(1)';
   uploadedImagePreview.style.removeProperty('filter');
 }

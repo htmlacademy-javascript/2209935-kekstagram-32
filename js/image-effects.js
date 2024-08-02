@@ -1,5 +1,6 @@
 const imageUploadPopup = document.querySelector('.img-upload__overlay');
 const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
+const imageEffectsSliderContainer = imageUploadPopup.querySelector('.img-upload__effect-level');
 const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
 const imageEffectsContainer = imageUploadPopup.querySelector('.effects__list');
 const imageEffectValue = imageUploadPopup.querySelector('.effect-level__value');
@@ -93,11 +94,11 @@ const changeImageEffectSlider = noUiSlider.create(imageEffectsSlider, {
 function onEffectItemClick (element) {
   currentSliderEffect = element.getAttribute('id');
   if (currentSliderEffect === 'effect-none') {
-    imageEffectsSlider.classList.add('visually-hidden');
+    imageEffectsSliderContainer.classList.add('visually-hidden');
     changeImageEffectSlider.reset();
     uploadedImagePreview.style.removeProperty('filter');
   } else {
-    imageEffectsSlider.classList.remove('visually-hidden');
+    imageEffectsSliderContainer.classList.remove('visually-hidden');
     changeImageEffectSlider.updateOptions(effects[currentSliderEffect].options);
   }
 }

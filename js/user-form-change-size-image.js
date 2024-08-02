@@ -9,10 +9,14 @@ function changeImageSizeGenerator () {
     if (element.classList.contains('scale__control--smaller')) {
       if (imageSizeCurrentValue >= 50 && imageSizeCurrentValue <= 100) {
         imageSizeCurrentValue -= 25;
+      } else {
+        return;
       }
     } else if (element.classList.contains('scale__control--bigger')) {
       if (imageSizeCurrentValue >= 0 && imageSizeCurrentValue < 100) {
         imageSizeCurrentValue += 25;
+      } else {
+        return;
       }
     }
     changeImageSizeInput.value = `${imageSizeCurrentValue}%`;
