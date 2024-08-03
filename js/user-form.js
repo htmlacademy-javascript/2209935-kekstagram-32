@@ -1,8 +1,8 @@
-import { isPressedKeyEscape, removeDomElement } from './utils.js';
 import { pristine } from './validation-user-form.js';
 import {changeImageSize} from './user-form-change-size-image.js';
 import {changeImageEffectSlider } from './image-effects.js';
-import { sendData } from './api.js';
+import { loadDataFromUserError, onUserFormSubmitClick} from './load-data-from-user.js';
+import { isPressedKeyEscape} from './utils.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -16,32 +16,6 @@ const commentInput = uploadImageForm.querySelector('.text__description');
 const changeSizeButtonsContainer = imageUploadPopup.querySelector('.img-upload__scale');
 const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
 const imageEffectsSliderContainer = imageUploadPopup.querySelector('.img-upload__effect-level');
-const submitButton = uploadImageForm.querySelector('.img-upload__submit');
-const bodyElement = document.querySelector('body');
-
-function loadDataFromUserSucces () {
-  closeEditImagePopup();
-  const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
-  const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
-  bodyElement.appendChild(successMessageTemplate);
-
-  const successMessage = bodyElement.querySelector('.success');
-  const successMessageCloseButton = successMessage.querySelector('.success__button');
-
-  successMessageCloseButton.addEventListener('click', () => {
-    removeDomElement(successMessage);
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isPressedKeyEscape(evt)) {
-      removeDomElement(successMessage);
-    }
-  });
-
-  document.addEventListener('click', () => {
-    removeDomElement(successMessage);
-  });
-}
 
 function onEditImagePopupCloseButtonKeydown(evt) {
   if (isPressedKeyEscape(evt)) {
@@ -51,46 +25,6 @@ function onEditImagePopupCloseButtonKeydown(evt) {
     } else {
       closeEditImagePopup();
     }
-  }
-}
-
-function loadDataFromUserError () {
-  document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-  const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
-  const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
-  bodyElement.appendChild(errorMessageTemplate);
-
-  const errorMessage = bodyElement.querySelector('.error');
-  const errorMessageCloseButton = errorMessage.querySelector('.error__button');
-
-  errorMessageCloseButton.addEventListener('click', () => {
-    removeDomElement(errorMessage);
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isPressedKeyEscape(evt)) {
-      removeDomElement(errorMessage);
-      document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-    }
-  });
-
-  document.addEventListener('click', () => {
-    removeDomElement(errorMessage);
-  });
-}
-
-
-function onUserFormSubmitClick (evt) {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    submitButton.disabled = true;
-    const formData = new FormData(evt.target);
-    sendData(formData)
-      .then(loadDataFromUserSucces)
-      .catch(loadDataFromUserError)
-      .finally(() => {
-        submitButton.disabled = false;
-      });
   }
 }
 
@@ -149,4 +83,4 @@ function onEditImagePopupCloseButtonClick() {
   closeEditImagePopup();
 }
 
-export {closeEditImagePopup, onEditImagePopupChange};
+export {closeEditImagePopup, onEditImagePopupChange, onEditImagePopupCloseButtonKeydown};

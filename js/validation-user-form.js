@@ -13,7 +13,7 @@ const createValidator = (type) => {
   let hashtagsArray = [];
 
   return (value) => {
-    hashtagsArray = value.trim().toLowerCase().split(' ').filter((element) => element.trim() !== '');
+    hashtagsArray = value.trim().toLowerCase().split(' ').filter((element) => element !== '');
     const set = new Set(hashtagsArray);
     switch (type) {
       case 'correct':

@@ -6,16 +6,16 @@ const Route = {
 };
 
 
-function isDataCorrect (inputArray) {
-  for (let i = 0; i < inputArray.length; i++) {
-    if (inputArray[i].id !== undefined && inputArray[i].url !== undefined && inputArray[i].likes !== undefined && inputArray[i].description !== undefined && inputArray[i].comments !== undefined) {
-      continue;
-    } else {
-      return false;
-    }
-  }
-  return true;
-}
+// function isDataCorrect (inputArray) {
+//   for (let i = 0; i < inputArray.length; i++) {
+//     if (inputArray[i].id !== undefined && inputArray[i].url !== undefined && inputArray[i].likes !== undefined && inputArray[i].description !== undefined && inputArray[i].comments !== undefined) {
+//       continue;
+//     } else {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
 
 const load = (route, method, body) =>
   fetch (`${BASE_URL}${route}`,{method, body})
@@ -23,14 +23,7 @@ const load = (route, method, body) =>
       if (!response.ok) {
         throw new Error();
       }
-      const postJson = response.json();
-      return postJson;
-    })
-    .then((postJson) => {
-      if (!isDataCorrect(postJson)) {
-        throw new Error();
-      }
-      return postJson;
+      return response.json();
     });
 
 const getData = () => load(Route.GET_DATA, 'GET');
