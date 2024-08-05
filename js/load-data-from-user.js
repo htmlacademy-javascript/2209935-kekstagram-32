@@ -41,16 +41,19 @@ function loadDataFromUserError () {
 
   errorMessageCloseButton.addEventListener('click', () => {
     removeDomElement(errorMessage);
+    pristine.reset();
   });
 
   document.addEventListener('keydown', (evt) => {
     if (isPressedKeyEscape(evt)) {
       removeDomElement(errorMessage);
+      pristine.reset();
       document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
     }
   });
 
   document.addEventListener('click', () => {
+    pristine.reset();
     removeDomElement(errorMessage);
   });
 }

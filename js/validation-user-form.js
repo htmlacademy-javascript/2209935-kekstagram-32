@@ -6,7 +6,7 @@ const pristine = new Pristine(uploadImageForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper'
-});
+}, false);
 
 
 const createValidator = (type) => {
@@ -50,7 +50,6 @@ const validatorDuplicate = createValidator('duplicate');
 pristine.addValidator(hashtagInput, validatorCorrect, 'Введен невалидный хештег');
 pristine.addValidator(hashtagInput, validatorOverCount, 'Превышено количество хештегов');
 pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повторяются');
-
 pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
 
-export {pristine};
+export {pristine };

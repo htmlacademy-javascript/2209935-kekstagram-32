@@ -57,7 +57,6 @@ function openEditImagePopup() {
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
   imageEffectsSliderContainer.classList.add('visually-hidden');
-
   changeSizeButtonsContainer.addEventListener('click', onChangeImageSize);
 }
 
