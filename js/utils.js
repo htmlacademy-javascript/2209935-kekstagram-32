@@ -26,10 +26,6 @@ function createRandomNumberFromRangeGenerator (min, max) { // функция г�
 
 const isPressedKeyEscape = (evt) => evt.key === 'Escape';
 
-function removeDomElement(element) {
-  element.remove();
-}
-
 const debounce = (callback, timeoutDelay, event) => {
   let timeoutId;
   return (...rest) => {
@@ -39,4 +35,4 @@ const debounce = (callback, timeoutDelay, event) => {
   };
 };
 
-export{isPressedKeyEscape, removeDomElement, createRandomNumberFromRangeGenerator, debounce};
+export{isPressedKeyEscape, createRandomNumberFromRangeGenerator, debounce};

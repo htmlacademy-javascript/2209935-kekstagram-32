@@ -1,10 +1,45 @@
-import { isPressedKeyEscape, removeDomElement } from './utils.js';
+import { isPressedKeyEscape } from './utils.js';
 import { closeEditImagePopup, onEditImagePopupCloseButtonKeydown } from './user-form.js';
 import { sendData } from './api.js';
 import { pristine } from './validation-user-form.js';
 
 const bodyElement = document.querySelector('body');
 const submitButton = document.querySelector('.img-upload__submit');
+
+function onDocumentLoadMessageEscapeKeyDown (evt) {
+  if (isPressedKeyEscape(evt)) {
+    const errorMessage = bodyElement.querySelector('.error');
+    const successMessage = bodyElement.querySelector('.success');
+    if(errorMessage) {
+      removeLoadMessage(errorMessage);
+      document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+    } else if (successMessage) {
+      removeLoadMessage(successMessage);
+    }
+    pristine.reset();
+  }
+}
+
+function onDocumentLoadMessageClick (evt) {
+  const errorMessage = bodyElement.querySelector('.error');
+  const successMessage = bodyElement.querySelector('.success');
+  if(errorMessage) {
+    if (!evt.target.closest('.error__inner')) {
+      pristine.reset();
+      removeLoadMessage(errorMessage);
+    }
+  } else if (successMessage) {
+    if (!evt.target.closest('.success__inner')) {
+      removeLoadMessage(successMessage);
+    }
+  }
+}
+
+function removeLoadMessage(element) {
+  element.remove();
+  document.removeEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
+  document.removeEventListener('click', onDocumentLoadMessageClick);
+}
 
 function loadDataFromUserSucces () {
   closeEditImagePopup();
@@ -16,18 +51,12 @@ function loadDataFromUserSucces () {
   const successMessageCloseButton = successMessage.querySelector('.success__button');
 
   successMessageCloseButton.addEventListener('click', () => {
-    removeDomElement(successMessage);
+    removeLoadMessage(successMessage);
   });
 
-  document.addEventListener('keydown', (evt) => {
-    if (isPressedKeyEscape(evt)) {
-      removeDomElement(successMessage);
-    }
-  });
+  document.addEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 
-  document.addEventListener('click', () => {
-    removeDomElement(successMessage);
-  });
+  successMessage.addEventListener('click', onDocumentLoadMessageClick);
 }
 
 function loadDataFromUserError () {
@@ -40,22 +69,13 @@ function loadDataFromUserError () {
   const errorMessageCloseButton = errorMessage.querySelector('.error__button');
 
   errorMessageCloseButton.addEventListener('click', () => {
-    removeDomElement(errorMessage);
+    removeLoadMessage(errorMessage);
     pristine.reset();
   });
 
-  document.addEventListener('keydown', (evt) => {
-    if (isPressedKeyEscape(evt)) {
-      removeDomElement(errorMessage);
-      pristine.reset();
-      document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-    }
-  });
+  document.addEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 
-  document.addEventListener('click', () => {
-    pristine.reset();
-    removeDomElement(errorMessage);
-  });
+  errorMessage.addEventListener('click', onDocumentLoadMessageClick);
 }
 
 function onUserFormSubmitClick (evt) {
