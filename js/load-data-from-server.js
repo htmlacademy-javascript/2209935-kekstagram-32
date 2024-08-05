@@ -31,7 +31,6 @@ getData()
   .then((posts) => {
     filterForm.classList.remove('img-filters--inactive');
     paintPosts(posts, currentButton.getAttribute('id'));
-
     picturesContainer.addEventListener('click', (evt) => {
       const target = evt.target.closest('.picture');
       if (target) {

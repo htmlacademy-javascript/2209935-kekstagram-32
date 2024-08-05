@@ -15,10 +15,17 @@ const filters = {
   'filter-discussed': (input) => input.slice().sort((a, b) => b.comments.length - a.comments.length),
 };
 
+function setCurrentFilterButton (element) {
+  const currentFilterButton = document.querySelector('.img-filters__button--active');
+  currentFilterButton.classList.remove('img-filters__button--active');
+  element.classList.add('img-filters__button--active');
+}
+
 const onFilterClick = (cb) => {
   filterContainer.addEventListener('click', (evt) => {
     const target = evt.target.closest('.img-filters__button');
     if (target) {
+      setCurrentFilterButton(target);
       cb(target.getAttribute('id'));
     }
   });

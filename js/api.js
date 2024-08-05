@@ -5,18 +5,6 @@ const Route = {
   SEND_DATA: '/'
 };
 
-
-// function isDataCorrect (inputArray) {
-//   for (let i = 0; i < inputArray.length; i++) {
-//     if (inputArray[i].id !== undefined && inputArray[i].url !== undefined && inputArray[i].likes !== undefined && inputArray[i].description !== undefined && inputArray[i].comments !== undefined) {
-//       continue;
-//     } else {
-//       return false;
-//     }
-//   }
-//   return true;
-// }
-
 const load = (route, method, body) =>
   fetch (`${BASE_URL}${route}`,{method, body})
     .then ((response) => {

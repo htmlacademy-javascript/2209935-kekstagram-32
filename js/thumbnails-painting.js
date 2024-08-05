@@ -2,12 +2,6 @@ import { filterPosts } from './filtration-posts.js';
 
 const picturesContainer = document.querySelector('.pictures');
 
-function setCurrentFilterButton (element) {
-  const currentFilterButton = document.querySelector('.img-filters__button--active');
-  currentFilterButton.classList.remove('img-filters__button--active');
-  element.classList.add('img-filters__button--active');
-}
-
 function paintPosts(elements, filter) { // отрисовывает миниатюры постов
 
   const pictures = document.querySelectorAll('.picture');
@@ -17,8 +11,6 @@ function paintPosts(elements, filter) { // отрисовывает миниат
   const postsFragment = document.createDocumentFragment();
 
   const filteredPosts = filterPosts (elements, filter);
-
-  setCurrentFilterButton(document.querySelector(`.img-filters__button[id = ${filter}]`));
 
   filteredPosts.forEach(({id, url, description, likes, comments}) => {
     const element = postTemplate.cloneNode(true);
