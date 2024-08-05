@@ -1,4 +1,4 @@
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainerElement = document.querySelector('.pictures');
 
 const getRandomInteger = (min, max) => { // функция генерации случайного целого числа из диапазона
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -8,7 +8,7 @@ const getRandomInteger = (min, max) => { // функция генерации с
   return Math.floor(result);
 };
 
-function createRandomNumberFromRangeGenerator (min, max) { // функция генерации неповторяющихся целых чисел из диапазона
+const createRandomNumberFromRangeGenerator = (min, max) => { // функция генерации неповторяющихся целых чисел из диапазона
   const previousValues = [];
 
   return function () {
@@ -22,7 +22,7 @@ function createRandomNumberFromRangeGenerator (min, max) { // функция г�
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
 const isPressedKeyEscape = (evt) => evt.key === 'Escape';
 
@@ -30,7 +30,7 @@ const debounce = (callback, timeoutDelay, event) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
-    picturesContainer.removeEventListener('click', event);
+    picturesContainerElement.removeEventListener('click', event);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };

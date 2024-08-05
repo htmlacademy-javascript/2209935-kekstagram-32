@@ -4,28 +4,28 @@ import { sendData } from './api.js';
 import { pristine } from './validation-user-form.js';
 
 const bodyElement = document.querySelector('body');
-const submitButton = document.querySelector('.img-upload__submit');
+const submitButtonElement = document.querySelector('.img-upload__submit');
 
-function onDocumentLoadMessageEscapeKeyDown (evt) {
+const onDocumentLoadMessageEscapeKeyDown = (evt) => {
   if (isPressedKeyEscape(evt)) {
-    const errorMessage = bodyElement.querySelector('.error');
-    const successMessage = bodyElement.querySelector('.success');
-    if(errorMessage) {
-      removeLoadMessage(errorMessage);
+    const errorMessageElement = bodyElement.querySelector('.error');
+    const successMessageElement = bodyElement.querySelector('.success');
+    if(errorMessageElement) {
+      removeLoadMessage(errorMessageElement);
       document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-    } else if (successMessage) {
-      removeLoadMessage(successMessage);
+    } else if (successMessageElement) {
+      removeLoadMessage(successMessageElement);
     }
     pristine.reset();
   }
-}
+};
 
 function removeLoadMessage(element) {
   element.remove();
   document.removeEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 }
 
-function loadDataFromUserSucces () {
+const loadDataFromUserSucces = () => {
   closeEditImagePopup();
   const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
@@ -45,9 +45,9 @@ function loadDataFromUserSucces () {
       removeLoadMessage(successMessage);
     }
   });
-}
+};
 
-function loadDataFromUserError () {
+const loadDataFromUserError = () => {
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
@@ -69,20 +69,20 @@ function loadDataFromUserError () {
       removeLoadMessage(errorMessage);
     }
   });
-}
+};
 
-function onUserFormSubmitClick (evt) {
+const onUserFormSubmitClick = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    submitButton.disabled = true;
+    submitButtonElement.disabled = true;
     const formData = new FormData(evt.target);
     sendData(formData)
       .then(loadDataFromUserSucces)
       .catch(loadDataFromUserError)
       .finally(() => {
-        submitButton.disabled = false;
+        submitButtonElement.disabled = false;
       });
   }
-}
+};
 
 export {loadDataFromUserError, loadDataFromUserSucces, onUserFormSubmitClick};

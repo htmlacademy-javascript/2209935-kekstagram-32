@@ -9,29 +9,29 @@ const RERENDER_DELAY = 500;
 const SHOW_ERROR_MESSAGE_TIME = 5000;
 
 const bodyElement = document.querySelector('body');
-const filterForm = document.querySelector('.img-filters');
-const currentButton = filterForm.querySelector('.img-filters__button--active');
-const picturesContainer = document.querySelector('.pictures');
-const imageUploadButton = document.querySelector('.img-upload__input');
+const filterFormElement = document.querySelector('.img-filters');
+const currentButtonElement = filterFormElement.querySelector('.img-filters__button--active');
+const picturesContainerElement = document.querySelector('.pictures');
+const imageUploadButtonElement = document.querySelector('.img-upload__input');
 
 
-imageUploadButton.removeAttribute('disabled');
-imageUploadButton.addEventListener('change', onEditImagePopupChange);
+imageUploadButtonElement.removeAttribute('disabled');
+imageUploadButtonElement.addEventListener('change', onEditImagePopupChange);
 
-function loadDataFromServerError () {
+const loadDataFromServerError = () => {
   const loadErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
   const errorMessage = loadErrorTemplate.cloneNode(true);
   bodyElement.appendChild(errorMessage);
   setTimeout(() => {
     errorMessage.remove();
   }, SHOW_ERROR_MESSAGE_TIME);
-}
+};
 
 getData()
   .then((posts) => {
-    filterForm.classList.remove('img-filters--inactive');
-    paintPosts(posts, currentButton.getAttribute('id'));
-    picturesContainer.addEventListener('click', (evt) => {
+    filterFormElement.classList.remove('img-filters--inactive');
+    paintPosts(posts, currentButtonElement.getAttribute('id'));
+    picturesContainerElement.addEventListener('click', (evt) => {
       const target = evt.target.closest('.picture');
       if (target) {
         onThumbnailClick(posts[target.getAttribute('data-postid')]);

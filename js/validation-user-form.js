@@ -1,8 +1,11 @@
-const uploadImageForm = document.querySelector('.img-upload__form');
-const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
-const commentInput = uploadImageForm.querySelector('.text__description');
+const uploadImageFormElement = document.querySelector('.img-upload__form');
+const hashtagInputElement = uploadImageFormElement.querySelector('.text__hashtags');
+const commentInputElement = uploadImageFormElement.querySelector('.text__description');
 
-const pristine = new Pristine(uploadImageForm, {
+const MAX_HASHTAGS_COUNT = 5;
+const regExp = new RegExp('/^#[a-zа-яё0-9]{1,19}$/');
+
+const pristine = new Pristine(uploadImageFormElement, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper'
@@ -21,13 +24,13 @@ const createValidator = (type) => {
           return true;
         }
         for (let i = 0; i < hashtagsArray.length; i++) {
-          if (!/^#[a-zа-яё0-9]{1,19}$/.test(hashtagsArray[i])) {
+          if (!regExp.test(hashtagsArray[i])) {
             return false;
           }
         }
         return true;
       case 'overcount':
-        if(hashtagsArray.length > 5) {
+        if(hashtagsArray.length > MAX_HASHTAGS_COUNT) {
           return false;
         }
         return true;
@@ -40,16 +43,14 @@ const createValidator = (type) => {
   };
 };
 
-function validateCommentInput (value) {
-  return value.length < 140;
-}
+const validateCommentInput = (value) => value.length < 140;
 
 const validatorCorrect = createValidator('correct');
 const validatorOverCount = createValidator('overcount');
 const validatorDuplicate = createValidator('duplicate');
-pristine.addValidator(hashtagInput, validatorCorrect, 'Введен невалидный хештег');
-pristine.addValidator(hashtagInput, validatorOverCount, 'Превышено количество хештегов');
-pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повторяются');
-pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
+pristine.addValidator(hashtagInputElement, validatorCorrect, 'Введен невалидный хештег');
+pristine.addValidator(hashtagInputElement, validatorOverCount, 'Превышено количество хештегов');
+pristine.addValidator(hashtagInputElement, validatorDuplicate, 'Хештеги повторяются');
+pristine.addValidator(commentInputElement, validateCommentInput, 'Длина комментария больше 140 символов');
 
 export {pristine };
