@@ -20,25 +20,9 @@ function onDocumentLoadMessageEscapeKeyDown (evt) {
   }
 }
 
-function onDocumentLoadMessageClick (evt) {
-  const errorMessage = bodyElement.querySelector('.error');
-  const successMessage = bodyElement.querySelector('.success');
-  if(errorMessage) {
-    if (!evt.target.closest('.error__inner')) {
-      pristine.reset();
-      removeLoadMessage(errorMessage);
-    }
-  } else if (successMessage) {
-    if (!evt.target.closest('.success__inner')) {
-      removeLoadMessage(successMessage);
-    }
-  }
-}
-
 function removeLoadMessage(element) {
   element.remove();
   document.removeEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
-  document.removeEventListener('click', onDocumentLoadMessageClick);
 }
 
 function loadDataFromUserSucces () {
@@ -56,7 +40,11 @@ function loadDataFromUserSucces () {
 
   document.addEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 
-  successMessage.addEventListener('click', onDocumentLoadMessageClick);
+  successMessage.addEventListener('click', (evt) => {
+    if (!evt.target.closest('.success__inner')) {
+      removeLoadMessage(successMessage);
+    }
+  });
 }
 
 function loadDataFromUserError () {
@@ -75,7 +63,12 @@ function loadDataFromUserError () {
 
   document.addEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 
-  errorMessage.addEventListener('click', onDocumentLoadMessageClick);
+  errorMessage.addEventListener('click', (evt) => {
+    if (!evt.target.closest('.error__inner')) {
+      pristine.reset();
+      removeLoadMessage(errorMessage);
+    }
+  });
 }
 
 function onUserFormSubmitClick (evt) {
