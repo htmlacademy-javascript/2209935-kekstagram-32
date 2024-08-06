@@ -71,7 +71,7 @@ const loadDataFromUserError = () => {
   });
 };
 
-const onUserFormSubmitClick = (evt) => {
+const onUserFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     submitButtonElement.disabled = true;
@@ -85,4 +85,4 @@ const onUserFormSubmitClick = (evt) => {
   }
 };
 
-export {loadDataFromUserError, loadDataFromUserSucces, onUserFormSubmitClick};
+export {loadDataFromUserError, loadDataFromUserSucces, onUserFormSubmit};

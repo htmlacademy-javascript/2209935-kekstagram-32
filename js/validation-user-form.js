@@ -3,7 +3,7 @@ const hashtagInputElement = uploadImageFormElement.querySelector('.text__hashtag
 const commentInputElement = uploadImageFormElement.querySelector('.text__description');
 
 const MAX_HASHTAGS_COUNT = 5;
-const regExp = new RegExp('/^#[a-zа-яё0-9]{1,19}$/');
+const regExp = /^#[a-zа-яё0-9]{1,19}$/;
 
 const pristine = new Pristine(uploadImageFormElement, {
   classTo: 'img-upload__field-wrapper',

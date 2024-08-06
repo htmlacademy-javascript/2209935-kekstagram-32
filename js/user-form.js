@@ -1,7 +1,7 @@
 import { pristine } from './validation-user-form.js';
 import {changeImageSize} from './user-form-change-size-image.js';
 import {imageEffectsSlider } from './image-effects.js';
-import { loadDataFromUserError, onUserFormSubmitClick} from './load-data-from-user.js';
+import { loadDataFromUserError, onUserFormSubmit} from './load-data-from-user.js';
 import { isPressedKeyEscape} from './utils.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -45,7 +45,7 @@ const openEditImagePopup = () => {
   document.body.classList.add('modal-open');
   popupCloseButtonElement.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-  uploadImageFormElement.addEventListener('submit', onUserFormSubmitClick);
+  uploadImageFormElement.addEventListener('submit', onUserFormSubmit);
   imageEffectsSliderContainerElement.classList.add('visually-hidden');
   changeSizeButtonsContainerElement.addEventListener('click', onChangeImageSize);
 };
@@ -79,8 +79,10 @@ const onEditImagePopupChange = (evt) => {
   openEditImagePopup();
 };
 
+imageUploadButtonElement.addEventListener('change', onEditImagePopupChange);
+
 function onEditImagePopupCloseButtonClick() {
   closeEditImagePopup();
 }
 
-export {closeEditImagePopup, onEditImagePopupChange, onEditImagePopupCloseButtonKeydown};
+export {closeEditImagePopup, onEditImagePopupCloseButtonKeydown};

@@ -12,7 +12,6 @@ const filterFormElement = document.querySelector('.img-filters');
 const currentButtonElement = filterFormElement.querySelector('.img-filters__button--active');
 const picturesContainerElement = document.querySelector('.pictures');
 
-//imageUploadButtonElement.removeAttribute('disabled');
 
 const loadDataFromServerError = () => {
   const loadErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
