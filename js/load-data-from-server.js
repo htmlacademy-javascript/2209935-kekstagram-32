@@ -1,9 +1,8 @@
 import { getData } from './api.js';
 import { debounce} from './utils.js';
-import { onFilterClick } from './filtration-posts.js';
+import { onFilterClick, filterPosts } from './filtration-posts.js';
 import { paintPosts } from './thumbnails-painting.js';
 import { onThumbnailClick } from './full-post-painting.js';
-import { onEditImagePopupChange } from './user-form.js';
 
 const RERENDER_DELAY = 500;
 const SHOW_ERROR_MESSAGE_TIME = 5000;
@@ -12,11 +11,8 @@ const bodyElement = document.querySelector('body');
 const filterFormElement = document.querySelector('.img-filters');
 const currentButtonElement = filterFormElement.querySelector('.img-filters__button--active');
 const picturesContainerElement = document.querySelector('.pictures');
-const imageUploadButtonElement = document.querySelector('.img-upload__input');
 
-
-imageUploadButtonElement.removeAttribute('disabled');
-imageUploadButtonElement.addEventListener('change', onEditImagePopupChange);
+//imageUploadButtonElement.removeAttribute('disabled');
 
 const loadDataFromServerError = () => {
   const loadErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
@@ -38,7 +34,8 @@ getData()
       }
     });
     onFilterClick(debounce((filter) => {
-      paintPosts(posts, filter);
+      const filteredPosts = filterPosts (posts, filter);
+      paintPosts(filteredPosts, filter);
     }, RERENDER_DELAY));
   })
   .catch(loadDataFromServerError);
