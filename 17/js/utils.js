@@ -1,7 +1,6 @@
-const filterContainer = document.querySelector('.img-filters');
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainerElement = document.querySelector('.pictures');
 
-const getRandomInteger = (min, max) => { // функция генерации случайного целого числа из диапазона
+const getRandomInteger = (min, max) => { // генерирует случайное целое число из диапазона
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
@@ -9,7 +8,7 @@ const getRandomInteger = (min, max) => { // функция генерации с
   return Math.floor(result);
 };
 
-function createRandomNumberFromRangeGenerator (min, max) { // функция генерации неповторяющихся целых чисел из диапазона
+const createRandomNumberFromRangeGenerator = (min, max) => { // генерирует неповторяющиеся целые числа из диапазона
   const previousValues = [];
 
   return function () {
@@ -23,31 +22,17 @@ function createRandomNumberFromRangeGenerator (min, max) { // функция г�
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
-const isPressedKeyEscape = (evt) => evt.key === 'Escape';
+const isPressedKeyEscape = (evt) => evt.key === 'Escape'; // проверяет нажата ли клавиша esc
 
-function removeDomElement(element) {
-  element.remove();
-}
-
-const debounce = (callback, timeoutDelay, event) => {
+const debounce = (callback, timeoutDelay, event) => { // устраняет дребезг
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
-    picturesContainer.removeEventListener('click', event);
+    picturesContainerElement.removeEventListener('click', event);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };
 
-const onFilterClick = (cb) => {
-  filterContainer.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.img-filters__button');
-    if (target) {
-      cb(target.getAttribute('id'), target);
-    }
-  });
-};
-
-
-export{isPressedKeyEscape, removeDomElement, createRandomNumberFromRangeGenerator, debounce, onFilterClick};
+export{isPressedKeyEscape, createRandomNumberFromRangeGenerator, debounce};

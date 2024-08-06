@@ -1,34 +1,37 @@
-const uploadImageForm = document.querySelector('.img-upload__form');
-const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
-const commentInput = uploadImageForm.querySelector('.text__description');
+const uploadImageFormElement = document.querySelector('.img-upload__form');
+const hashtagInputElement = uploadImageFormElement.querySelector('.text__hashtags');
+const commentInputElement = uploadImageFormElement.querySelector('.text__description');
 
-const pristine = new Pristine(uploadImageForm, {
+const MAX_HASHTAGS_COUNT = 5;
+const MAX_COMMENTS_LENGTH = 140;
+const regExp = /^#[a-zа-яё0-9]{1,19}$/;
+
+const pristine = new Pristine(uploadImageFormElement, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper'
-});
+}, false);
 
 
-const createValidator = (type) => {
+const createValidator = (type) => { // создает функцию-генератор валидации
   let hashtagsArray = [];
 
   return (value) => {
-    hashtagsArray = value.trim().toLowerCase().split(' ');
+    hashtagsArray = value.trim().toLowerCase().split(' ').filter((element) => element !== '');
     const set = new Set(hashtagsArray);
     switch (type) {
       case 'correct':
         if (value.length === 0) {
           return true;
         }
-        hashtagsArray = value.trim().toLowerCase().split(' ');
         for (let i = 0; i < hashtagsArray.length; i++) {
-          if (!/^#[a-zа-яё0-9]{1,19}$/.test(hashtagsArray[i])) {
+          if (!regExp.test(hashtagsArray[i])) {
             return false;
           }
         }
         return true;
       case 'overcount':
-        if(hashtagsArray.length > 5) {
+        if(hashtagsArray.length > MAX_HASHTAGS_COUNT) {
           return false;
         }
         return true;
@@ -41,17 +44,14 @@ const createValidator = (type) => {
   };
 };
 
-function validateCommentInput (value) {
-  return value.length < 140;
-}
+const validateCommentInput = (value) => value.length < MAX_COMMENTS_LENGTH;
 
-const validatorCorrect = createValidator('correct');
-const validatorOverCount = createValidator('overcount');
-const validatorDuplicate = createValidator('duplicate');
-pristine.addValidator(hashtagInput, validatorCorrect, 'Введен невалидный хештег');
-pristine.addValidator(hashtagInput, validatorOverCount, 'Превышено количество хештегов');
-pristine.addValidator(hashtagInput, validatorDuplicate, 'Хештеги повторяются');
+const validatorCorrect = createValidator('correct'); // валидирует на корректность введеных хештегов
+const validatorOverCount = createValidator('overcount'); // валидирует на превышение количества введеных хештегов
+const validatorDuplicate = createValidator('duplicate'); // валидирует на повторение введеных хештегов
+pristine.addValidator(hashtagInputElement, validatorCorrect, 'Введен невалидный хештег');
+pristine.addValidator(hashtagInputElement, validatorOverCount, 'Превышено количество хештегов');
+pristine.addValidator(hashtagInputElement, validatorDuplicate, 'Хештеги повторяются');
+pristine.addValidator(commentInputElement, validateCommentInput, 'Длина комментария больше 140 символов');
 
-pristine.addValidator(commentInput, validateCommentInput, 'Длина комментария больше 140 символов');
-
-export {pristine};
+export {pristine };

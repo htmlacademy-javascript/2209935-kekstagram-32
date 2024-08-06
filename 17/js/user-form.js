@@ -1,94 +1,72 @@
-import { isPressedKeyEscape } from './utils.js';
 import { pristine } from './validation-user-form.js';
-import {changeImageSizeGenerator} from './user-form-change-size-image.js';
-import {changeImageEffectSlider } from './image-effects.js';
-import { sendData, loadDataFromUserError } from './api.js';
+import {changeImageSize} from './user-form-change-size-image.js';
+import {imageEffectsSlider } from './image-effects.js';
+import { loadDataFromUserError, onUserFormSubmit} from './load-data-from-user.js';
+import { isPressedKeyEscape} from './utils.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const imageUploadButton = document.querySelector('.img-upload__input');
-const imageUploadPopup = document.querySelector('.img-upload__overlay');
-const popupCloseButton = imageUploadPopup.querySelector('.img-upload__cancel');
-const effectsPrewiewImage = imageUploadPopup.querySelectorAll('.effects__preview');
-const uploadImageForm = document.querySelector('.img-upload__form');
-const hashtagInput = uploadImageForm.querySelector('.text__hashtags');
-const commentInput = uploadImageForm.querySelector('.text__description');
-const changeSizeButtonsContainer = imageUploadPopup.querySelector('.img-upload__scale');
-const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
-const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
-const submitButton = uploadImageForm.querySelector('.img-upload__submit');
+const imageUploadButtonElement = document.querySelector('.img-upload__input');
+const imageUploadPopupElement = document.querySelector('.img-upload__overlay');
+const popupCloseButtonElement = imageUploadPopupElement.querySelector('.img-upload__cancel');
+const effectsPrewiewImageElement = imageUploadPopupElement.querySelectorAll('.effects__preview');
+const uploadImageFormElement = document.querySelector('.img-upload__form');
+const hashtagInputElement = uploadImageFormElement.querySelector('.text__hashtags');
+const commentInputElement = uploadImageFormElement.querySelector('.text__description');
+const changeSizeButtonsContainerElement = imageUploadPopupElement.querySelector('.img-upload__scale');
+const uploadedImagePreviewElement = imageUploadPopupElement.querySelector('.img-upload__preview img');
+const imageEffectsSliderContainerElement = imageUploadPopupElement.querySelector('.img-upload__effect-level');
 
-function onUserFormSubmitClick (evt) {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    submitButton.disabled = true;
-    const formData = new FormData(evt.target);
-    sendData(formData)
-      .finally(() => {
-        submitButton.disabled = false;
-      });
+const onChangeImageSize = (evt) => { // обрабатывает клик по кнопкам зума картинки
+  const target = evt.target.closest('.scale__control');
+  if (target) {
+    changeImageSize(target);
   }
-}
+};
 
-function openEditImagePopup() {
 
-  const file = imageUploadButton.files[0];
+const openEditImagePopup = () => { // открывает окно редактирования поста
+
+  const file = imageUploadButtonElement.files[0];
   const fileName = file.name.toLowerCase();
 
   if (FILE_TYPES.some((item) => fileName.endsWith(item))) {
     const imageUrl = URL.createObjectURL(file);
-    uploadedImagePreview.src = imageUrl;
+    uploadedImagePreviewElement.src = imageUrl;
 
-    effectsPrewiewImage.forEach((item) => {
+    effectsPrewiewImageElement.forEach((item) => {
       item.style.backgroundImage = `url(${imageUrl})`;
     });
   } else {
     return loadDataFromUserError();
   }
 
-  imageUploadPopup.classList.remove('hidden');
+  imageUploadPopupElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  popupCloseButton.addEventListener('click', onEditImagePopupCloseButtonClick);
+  popupCloseButtonElement.addEventListener('click', onEditImagePopupCloseButtonClick);
   document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
-  uploadImageForm.addEventListener('submit', onUserFormSubmitClick);
+  uploadImageFormElement.addEventListener('submit', onUserFormSubmit);
+  imageEffectsSliderContainerElement.classList.add('visually-hidden');
+  changeSizeButtonsContainerElement.addEventListener('click', onChangeImageSize);
+};
 
-  const changeImageSize = changeImageSizeGenerator();
-
-  changeSizeButtonsContainer.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.scale__control');
-    if (target) {
-      changeImageSize(target);
-    }
-  });
-
-  imageEffectsSlider.classList.add('visually-hidden');
-  uploadedImagePreview.style.transform = 'scale(1)';
-  uploadedImagePreview.style.removeProperty('filter');
-}
-
-function closeEditImagePopup () {
-  imageUploadPopup.classList.add('hidden');
+const closeEditImagePopup = () => { // закрывает окно редактирования поста
+  imageUploadPopupElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  popupCloseButton.removeEventListener('click', onEditImagePopupCloseButtonClick);
+  popupCloseButtonElement.removeEventListener('click', onEditImagePopupCloseButtonClick);
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   pristine.reset();
-  changeImageEffectSlider.reset();
-  uploadImageForm.reset();
-}
+  uploadImageFormElement.reset();
+  imageEffectsSlider.reset();
+  uploadedImagePreviewElement.style.removeProperty('transform');
+  uploadedImagePreviewElement.style.removeProperty('filter');
+  changeSizeButtonsContainerElement.removeEventListener('click', onChangeImageSize);
+};
 
-function onEditImagePopupChange (evt) {
-  evt.preventDefault();
-  openEditImagePopup();
-}
-
-function onEditImagePopupCloseButtonClick() {
-  closeEditImagePopup();
-}
-
-function onEditImagePopupCloseButtonKeydown(evt) {
+function onEditImagePopupCloseButtonKeydown (evt) { // обрабатывает нажатие esc на окне редактирвоания
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
-    if (document.activeElement === hashtagInput || document.activeElement === commentInput) {
+    if (document.activeElement === hashtagInputElement || document.activeElement === commentInputElement) {
       evt.stopPropagation();
     } else {
       closeEditImagePopup();
@@ -96,6 +74,13 @@ function onEditImagePopupCloseButtonKeydown(evt) {
   }
 }
 
-imageUploadButton.addEventListener('change', onEditImagePopupChange);
+imageUploadButtonElement.addEventListener('change', (evt) => { // добавляет обработчик на кнопку открытия загрузки картинки пользователя
+  evt.preventDefault();
+  openEditImagePopup();
+});
 
-export {closeEditImagePopup };
+function onEditImagePopupCloseButtonClick() { // обработчик по кнопке закрытия окна редактирования
+  closeEditImagePopup();
+}
+
+export {closeEditImagePopup, onEditImagePopupCloseButtonKeydown};
