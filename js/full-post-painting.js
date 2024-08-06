@@ -1,6 +1,6 @@
-import { isPressedKeyEscape } from './utils.js';
+import { isPressedKeyEscape, isArrayEmpty } from './utils.js';
 
-const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
+const SHOWN_COMMENTS_COUNT = 5; // число выводимых комментариев за один раз
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
@@ -35,14 +35,11 @@ function closePost () { // закрывает окна поста
   bigPictureCloseButton.removeEventListener('click', onPostCloseButtonClick);
   commentsList.innerHTML = '';
   commentsLoaderButton.classList.remove('hidden');
-  commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
 }
 
-function hideCommentsLoaderButton (comments) { // скрывает кнопку подгрузки комментариев
-  if (comments.length === 0) {
-    commentsLoaderButton.classList.add('hidden');
-    return true;
-  }
+function switchOffCommentsLoaderButton () {
+  commentsLoaderButton.classList.add('hidden');
+  commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
 }
 
 function onLoadMoreCommentsButton() { // обрабатывает клик по кнопке Загрузить еще
@@ -55,13 +52,13 @@ const paintComments = (comments) => { // отрисовывает коммент
   let shownCommentsCount = 0;
 
   return () => {
-    if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
+    if (workVersionComments.length < SHOWN_COMMENTS_COUNT) {
       shownCommentsCount += workVersionComments.length;
     } else {
-      shownCommentsCount += 5;
+      shownCommentsCount += SHOWN_COMMENTS_COUNT;
     }
 
-    const partComments = workVersionComments.splice(0, 5);
+    const partComments = workVersionComments.splice(0, SHOWN_COMMENTS_COUNT);
     commentsShownCount.textContent = shownCommentsCount;
 
     partComments.forEach(({avatar, message, name}) => {
@@ -71,9 +68,12 @@ const paintComments = (comments) => { // отрисовывает коммент
       commentPicture.alt = name;
       comment.querySelector('.social__text').textContent = message;
       commentFragment.appendChild(comment);
-      hideCommentsLoaderButton(workVersionComments);
     });
-    commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
+
+    if (isArrayEmpty(workVersionComments)) {
+      switchOffCommentsLoaderButton(workVersionComments);
+    }
+
     return commentFragment;
   };
 };
@@ -86,8 +86,9 @@ const onThumbnailClick = (post) => { // отрисовывает пост при
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
 
-  if (!hideCommentsLoaderButton(comments)) {
+  if (!isArrayEmpty(comments)) {
     paintedComments = paintComments(comments);
+    commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
     commentsList.appendChild(paintedComments());
   } else {
     commentsShownCount.textContent = 0;

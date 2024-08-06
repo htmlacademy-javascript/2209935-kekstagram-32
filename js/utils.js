@@ -26,6 +26,8 @@ const createRandomNumberFromRangeGenerator = (min, max) => { // генериру
 
 const isPressedKeyEscape = (evt) => evt.key === 'Escape'; // проверяет нажата ли клавиша esc
 
+const isArrayEmpty = (array) => array.length === 0; // проверяет не пустой ли массив
+
 const debounce = (callback, timeoutDelay, event) => { // устраняет дребезг
   let timeoutId;
   return (...rest) => {
@@ -35,4 +37,4 @@ const debounce = (callback, timeoutDelay, event) => { // устраняет др
   };
 };
 
-export{isPressedKeyEscape, createRandomNumberFromRangeGenerator, debounce};
+export{isPressedKeyEscape, createRandomNumberFromRangeGenerator, debounce, isArrayEmpty};
