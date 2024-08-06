@@ -6,7 +6,7 @@ import { pristine } from './validation-user-form.js';
 const bodyElement = document.querySelector('body');
 const submitButtonElement = document.querySelector('.img-upload__submit');
 
-const onDocumentLoadMessageEscapeKeyDown = (evt) => {
+const onDocumentLoadMessageEscapeKeyDown = (evt) => { // обрабатывает нажание esc на сообщениях об успешной/неуспешной загрузке данных от пользователя
   if (isPressedKeyEscape(evt)) {
     const errorMessageElement = bodyElement.querySelector('.error');
     const successMessageElement = bodyElement.querySelector('.success');
@@ -20,12 +20,12 @@ const onDocumentLoadMessageEscapeKeyDown = (evt) => {
   }
 };
 
-function removeLoadMessage(element) {
+function removeLoadMessage(element) { // удаляет сообщение об ошибке/успехе загрузки данных
   element.remove();
   document.removeEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 }
 
-const loadDataFromUserSucces = () => {
+const loadDataFromUserSucces = () => { // обрабатывает успешную загрузку данных пользователя
   closeEditImagePopup();
   const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
@@ -47,7 +47,7 @@ const loadDataFromUserSucces = () => {
   });
 };
 
-const loadDataFromUserError = () => {
+const loadDataFromUserError = () => { // обрабатывает ошибку загрузки данных пользователя
   document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
   const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
@@ -71,7 +71,7 @@ const loadDataFromUserError = () => {
   });
 };
 
-const onUserFormSubmit = (evt) => {
+const onUserFormSubmit = (evt) => { // обрабатывает отправку формы загрузки данных пользователя
   evt.preventDefault();
   if (pristine.validate()) {
     submitButtonElement.disabled = true;

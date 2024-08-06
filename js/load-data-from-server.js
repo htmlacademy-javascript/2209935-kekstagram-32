@@ -13,7 +13,7 @@ const currentButtonElement = filterFormElement.querySelector('.img-filters__butt
 const picturesContainerElement = document.querySelector('.pictures');
 
 
-const loadDataFromServerError = () => {
+const loadDataFromServerError = () => { // обрабатывет ошибку загрузки данных с сервера
   const loadErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
   const errorMessage = loadErrorTemplate.cloneNode(true);
   bodyElement.appendChild(errorMessage);

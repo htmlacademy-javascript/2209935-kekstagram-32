@@ -1,8 +1,7 @@
-import { isPressedKeyEscape } from './utils.js'; // импортируем функцию проверки нажата ли клавиша ESC
+import { isPressedKeyEscape } from './utils.js';
 
 const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
 
-// записываем в переменные необходимые узлы DOM
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
@@ -17,22 +16,19 @@ const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader'
 
 let paintedComments;
 
-// функция обработки закрытия поста клавишей esc
-const onPostCloseButtonKeydown = (evt) => {
+const onPostCloseButtonKeydown = (evt) => { // обрабатывает закрытие поста клавишей esc
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
     closePost();
   }
 };
 
-// функция обработки закрытия поста кнопкой крестиком
-const onPostCloseButtonClick = (evt) => {
+const onPostCloseButtonClick = (evt) => { // обрабатывает закрытие поста кнопкой крестиком
   evt.preventDefault();
   closePost();
 };
 
-// функция закрытия окна поста
-function closePost () {
+function closePost () { // закрывает окна поста
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPostCloseButtonKeydown);
@@ -42,22 +38,21 @@ function closePost () {
   commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
 }
 
-function hideCommentsLoaderButton (comments) { // функция проверки не пустой ли массив комментариев
+function hideCommentsLoaderButton (comments) { // скрывает кнопку подгрузки комментариев
   if (comments.length === 0) {
     commentsLoaderButton.classList.add('hidden');
     return true;
   }
 }
 
-function onLoadMoreCommentsButton() { // функция-обработчик клика по кнопке Загрузить еще
+function onLoadMoreCommentsButton() { // обрабатывает клик по кнопке Загрузить еще
   commentsList.appendChild(paintedComments());
 }
 
-// функция отрисовывает комментарии
-const paintComments = (comments) => {
+const paintComments = (comments) => { // отрисовывает комментарии
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
-  let shownCommentsCount = 0; // переменная отражает число отображаемых комментариев
+  let shownCommentsCount = 0;
 
   return () => {
     if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
@@ -83,8 +78,7 @@ const paintComments = (comments) => {
   };
 };
 
-// функция отрисовки поста при клике на миниатюре
-const onThumbnailClick = (post) => {
+const onThumbnailClick = (post) => { // отрисовывает пост при клике на миниатюре
   const {url, description, likes, comments} = post;
 
   bigPictureImage.src = url;

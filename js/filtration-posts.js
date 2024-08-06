@@ -17,13 +17,13 @@ const filters = {
   'filter-discussed': (input) => input.slice().sort((a, b) => b.comments.length - a.comments.length),
 };
 
-const setCurrentFilterButton = (element) => {
+const setCurrentFilterButton = (element) => { // установливает кнопку активного фильтра
   const currentFilterButton = document.querySelector('.img-filters__button--active');
   currentFilterButton.classList.remove('img-filters__button--active');
   element.classList.add('img-filters__button--active');
 };
 
-const onFilterClick = (cb) => {
+const onFilterClick = (cb) => { // обрабатывает клик по фильтру
   filterContainerElement.addEventListener('click', (evt) => {
     const target = evt.target.closest('.img-filters__button');
     if (target) {
@@ -33,6 +33,6 @@ const onFilterClick = (cb) => {
   });
 };
 
-const filterPosts = (posts, filter) => filters[filter](posts);
+const filterPosts = (posts, filter) => filters[filter](posts); // фильтрует посты
 
 export {onFilterClick, filterPosts};

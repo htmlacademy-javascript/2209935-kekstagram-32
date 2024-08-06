@@ -91,7 +91,7 @@ const imageEffectsSlider = noUiSlider.create(imageEffectsSliderElement, {
   }
 });
 
-const onEffectItemClick = (element) => {
+const onEffectItemClick = (element) => { // обрабатывает клик по кнопке с выбором эффекта
   currentSliderEffect = element.getAttribute('id');
   if (currentSliderEffect === 'effect-none') {
     imageEffectsSliderContainerElement.classList.add('visually-hidden');
@@ -103,21 +103,19 @@ const onEffectItemClick = (element) => {
   }
 };
 
-const onChangeEffectSliderUpdate = () => {
-  const currentSliderValue = imageEffectsSlider.get();
-  imageEffectValueElement.value = currentSliderValue;
-  if (currentSliderEffect !== 'effect-none') {
-    uploadedImagePreviewElement.style.filter = `${effects[currentSliderEffect].filter}(${currentSliderValue}${effects[currentSliderEffect].unit})`;
-  }
-};
-
-imageEffectsContainerElement.addEventListener('click', (evt) => {
+imageEffectsContainerElement.addEventListener('click', (evt) => { // вешает обработчик на контейнер кнопок выбора эффектов
   const target = evt.target.closest('.effects__radio');
   if (target) {
     onEffectItemClick(target);
   }
 });
 
-imageEffectsSlider.on('update', onChangeEffectSliderUpdate);
+imageEffectsSlider.on('update', () => { // обрабатывает обновление данных слайдера
+  const currentSliderValue = imageEffectsSlider.get();
+  imageEffectValueElement.value = currentSliderValue;
+  if (currentSliderEffect !== 'effect-none') {
+    uploadedImagePreviewElement.style.filter = `${effects[currentSliderEffect].filter}(${currentSliderValue}${effects[currentSliderEffect].unit})`;
+  }
+});
 
-export {imageEffectsSlider, onChangeEffectSliderUpdate};
+export {imageEffectsSlider};

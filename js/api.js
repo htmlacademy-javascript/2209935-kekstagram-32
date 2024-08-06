@@ -5,7 +5,7 @@ const Route = {
   SEND_DATA: '/'
 };
 
-const load = (route, method, body) =>
+const load = (route, method, body) => // загружает данные по сети
   fetch (`${BASE_URL}${route}`,{method, body})
     .then ((response) => {
       if (!response.ok) {
@@ -14,7 +14,7 @@ const load = (route, method, body) =>
       return response.json();
     });
 
-const getData = () => load(Route.GET_DATA, 'GET');
-const sendData = (body) => load(Route.SEND_DATA, 'POST', body);
+const getData = () => load(Route.GET_DATA, 'GET'); // загружает данные с сервера
+const sendData = (body) => load(Route.SEND_DATA, 'POST', body); // загружает данные от пользователя
 
 export {getData, sendData};

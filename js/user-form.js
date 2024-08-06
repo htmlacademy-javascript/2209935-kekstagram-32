@@ -17,7 +17,7 @@ const changeSizeButtonsContainerElement = imageUploadPopupElement.querySelector(
 const uploadedImagePreviewElement = imageUploadPopupElement.querySelector('.img-upload__preview img');
 const imageEffectsSliderContainerElement = imageUploadPopupElement.querySelector('.img-upload__effect-level');
 
-const onChangeImageSize = (evt) => {
+const onChangeImageSize = (evt) => { // обрабатывает клик по кнопкам зума картинки
   const target = evt.target.closest('.scale__control');
   if (target) {
     changeImageSize(target);
@@ -25,7 +25,7 @@ const onChangeImageSize = (evt) => {
 };
 
 
-const openEditImagePopup = () => {
+const openEditImagePopup = () => { // открывает окно редактирования поста
 
   const file = imageUploadButtonElement.files[0];
   const fileName = file.name.toLowerCase();
@@ -50,7 +50,7 @@ const openEditImagePopup = () => {
   changeSizeButtonsContainerElement.addEventListener('click', onChangeImageSize);
 };
 
-const closeEditImagePopup = () => {
+const closeEditImagePopup = () => { // закрывает окно редактирования поста
   imageUploadPopupElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   popupCloseButtonElement.removeEventListener('click', onEditImagePopupCloseButtonClick);
@@ -63,7 +63,7 @@ const closeEditImagePopup = () => {
   changeSizeButtonsContainerElement.removeEventListener('click', onChangeImageSize);
 };
 
-function onEditImagePopupCloseButtonKeydown (evt) {
+function onEditImagePopupCloseButtonKeydown (evt) { // обрабатывает нажатие esc на окне редактирвоания
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
     if (document.activeElement === hashtagInputElement || document.activeElement === commentInputElement) {
@@ -74,14 +74,12 @@ function onEditImagePopupCloseButtonKeydown (evt) {
   }
 }
 
-const onEditImagePopupChange = (evt) => {
+imageUploadButtonElement.addEventListener('change', (evt) => { // добавляет обработчик на кнопку открытия загрузки картинки пользователя
   evt.preventDefault();
   openEditImagePopup();
-};
+});
 
-imageUploadButtonElement.addEventListener('change', onEditImagePopupChange);
-
-function onEditImagePopupCloseButtonClick() {
+function onEditImagePopupCloseButtonClick() { // обработчик по кнопке закрытия окна редактирования
   closeEditImagePopup();
 }
 
