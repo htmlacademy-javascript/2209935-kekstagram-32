@@ -1,5 +1,5 @@
 import { isPressedKeyEscape } from './utils.js';
-import { closeEditImagePopup, onEditImagePopupCloseButtonKeydown } from './user-form.js';
+import { closeEditImagePopup, onEditImagePopupCloseKeydown } from './user-form.js';
 import { sendData } from './api.js';
 import { pristine } from './validation-user-form.js';
 
@@ -12,7 +12,9 @@ const onDocumentLoadMessageEscapeKeyDown = (evt) => { // обрабатывае�
     const successMessageElement = bodyElement.querySelector('.success');
     if(errorMessageElement) {
       removeLoadMessage(errorMessageElement);
-      document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+      if (!document.querySelector('.img-upload__overlay').classList.contains('.hidden')) {
+        document.addEventListener('keydown', onEditImagePopupCloseKeydown);
+      }
     } else if (successMessageElement) {
       removeLoadMessage(successMessageElement);
     }
@@ -48,7 +50,7 @@ const loadDataFromUserSucces = () => { // обрабатывает успешн�
 };
 
 const loadDataFromUserError = () => { // обрабатывает ошибку загрузки данных пользователя
-  document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+  document.removeEventListener('keydown', onEditImagePopupCloseKeydown);
   const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
   bodyElement.appendChild(errorMessageTemplate);

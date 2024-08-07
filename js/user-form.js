@@ -44,7 +44,7 @@ const openEditImagePopup = () => { // открывает окно редакти
   imageUploadPopupElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   popupCloseButtonElement.addEventListener('click', onEditImagePopupCloseButtonClick);
-  document.addEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+  document.addEventListener('keydown', onEditImagePopupCloseKeydown);
   uploadImageFormElement.addEventListener('submit', onUserFormSubmit);
   imageEffectsSliderContainerElement.classList.add('visually-hidden');
   changeSizeButtonsContainerElement.addEventListener('click', onChangeImageSize);
@@ -54,7 +54,7 @@ const closeEditImagePopup = () => { // закрывает окно редакт�
   imageUploadPopupElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   popupCloseButtonElement.removeEventListener('click', onEditImagePopupCloseButtonClick);
-  document.removeEventListener('keydown', onEditImagePopupCloseButtonKeydown);
+  document.removeEventListener('keydown', onEditImagePopupCloseKeydown);
   pristine.reset();
   uploadImageFormElement.reset();
   imageEffectsSlider.reset();
@@ -63,7 +63,7 @@ const closeEditImagePopup = () => { // закрывает окно редакт�
   changeSizeButtonsContainerElement.removeEventListener('click', onChangeImageSize);
 };
 
-function onEditImagePopupCloseButtonKeydown (evt) { // обрабатывает нажатие esc на окне редактирвоания
+function onEditImagePopupCloseKeydown (evt) { // обрабатывает нажатие esc на окне редактирвоания
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
     if (document.activeElement === hashtagInputElement || document.activeElement === commentInputElement) {
@@ -83,4 +83,4 @@ function onEditImagePopupCloseButtonClick() { // обработчик по кн�
   closeEditImagePopup();
 }
 
-export {closeEditImagePopup, onEditImagePopupCloseButtonKeydown};
+export {closeEditImagePopup, onEditImagePopupCloseKeydown};
