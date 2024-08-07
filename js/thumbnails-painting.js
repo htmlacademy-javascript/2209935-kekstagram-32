@@ -1,14 +1,15 @@
-import { onThumbnailClick } from './full-post-painting.js'; // импортируем функцию для обработчика события клик по контейнеру миниатюр
+const picturesContainerElement = document.querySelector('.pictures');
 
-// записываем в переменные необходимые узлы DOM
-const picturesContainer = document.querySelector('.pictures');
-const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const paintPosts = (filteredPosts) => { // отрисовывает миниатюры постов
 
-function paintPosts(elements) { // отрисовывает миниатюры постов
+  const pictures = document.querySelectorAll('.picture');
+  pictures.forEach((element) => element.remove());
+
+  const postTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
   const postsFragment = document.createDocumentFragment();
 
-  elements.forEach(({id, url, description, likes, comments}) => {
-    const element = postTemplate.cloneNode(true);
+  filteredPosts.forEach(({id, url, description, likes, comments}) => {
+    const element = postTemplateElement.cloneNode(true);
     const postPicture = element.querySelector('.picture__img');
     element.setAttribute('data-postid', id);
     postPicture.src = url;
@@ -17,16 +18,7 @@ function paintPosts(elements) { // отрисовывает миниатюры �
     element.querySelector('.picture__likes').textContent = likes;
     postsFragment.appendChild(element);
   });
-  picturesContainer.appendChild(postsFragment);
-
-  // вешаем обработчик события клик на контейнере миниатюр
-  picturesContainer.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.picture');
-    if (target) {
-      onThumbnailClick(elements[target.getAttribute('data-postid')]);
-    }
-  });
-
-}
+  picturesContainerElement.appendChild(postsFragment);
+};
 
 export {paintPosts};

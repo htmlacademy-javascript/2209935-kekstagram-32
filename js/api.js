@@ -1,5 +1,3 @@
-import { isPressedKeyEscape, removeDomElement } from './utils.js';
-import { closeEditImagePopup } from './user-form.js';
 
 const BASE_URL = 'https://32.javascript.htmlacademy.pro/kekstagram';
 const Route = {
@@ -7,83 +5,16 @@ const Route = {
   SEND_DATA: '/'
 };
 
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-};
-
-const bodyElement = document.querySelector('body');
-const SHOW_ERROR_MESSAGE_TIME = 5000;
-
-function loadDataFromUserSucces () {
-  const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
-  const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
-  bodyElement.appendChild(successMessageTemplate);
-
-  const successMessage = bodyElement.querySelector('.success');
-  const successMessageCloseButton = successMessage.querySelector('.success__button');
-
-  successMessageCloseButton.addEventListener('click', () => {
-    removeDomElement(successMessage);
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isPressedKeyEscape(evt)) {
-      removeDomElement(successMessage);
-    }
-  });
-
-  document.addEventListener('click', () => {
-    removeDomElement(successMessage);
-  });
-  closeEditImagePopup();
-}
-
-function loadDataFromUserError () {
-  const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
-  const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
-  bodyElement.appendChild(errorMessageTemplate);
-
-  const errorMessage = bodyElement.querySelector('.error');
-  const errorMessageCloseButton = errorMessage.querySelector('.error__button');
-
-  errorMessageCloseButton.addEventListener('click', () => {
-    removeDomElement(errorMessage);
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isPressedKeyEscape(evt)) {
-      removeDomElement(errorMessage);
-    }
-  });
-
-  document.addEventListener('click', () => {
-    removeDomElement(errorMessage);
-  });
-}
-
-function loadDataFromServerError () {
-  const loadErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
-  const errorMessage = loadErrorTemplate.cloneNode(true);
-  bodyElement.appendChild(errorMessage);
-  setTimeout(() => {
-    errorMessage.remove();
-  }, SHOW_ERROR_MESSAGE_TIME);
-}
-
-
-const load = (route, method, onError, body, onSuccess) =>
+const load = (route, method, body) => // загружает данные по сети
   fetch (`${BASE_URL}${route}`,{method, body})
     .then ((response) => {
       if (!response.ok) {
         throw new Error();
       }
       return response.json();
-    })
-    .then(onSuccess)
-    .catch(onError);
+    });
 
-const getData = () => load(Route.GET_DATA, Method.GET, loadDataFromServerError);
-const sendData = (body) => load(Route.SEND_DATA, Method.POST, loadDataFromUserError, body, loadDataFromUserSucces);
+const getData = () => load(Route.GET_DATA, 'GET'); // загружает данные с сервера
+const sendData = (body) => load(Route.SEND_DATA, 'POST', body); // загружает данные от пользователя
 
-export {getData, sendData, loadDataFromUserError};
+export {getData, sendData};

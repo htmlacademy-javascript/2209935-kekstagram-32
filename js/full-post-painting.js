@@ -1,8 +1,7 @@
-import { isPressedKeyEscape } from './utils.js'; // импортируем функцию проверки нажата ли клавиша ESC
+import { isPressedKeyEscape, isArrayEmpty } from './utils.js';
 
-const SHOWN_COMMENTS_PERIOD = 5; // число-период вывода комментариев по нажатию на 'Загрузить еще'
+const SHOWN_COMMENTS_COUNT = 5; // число выводимых комментариев за один раз
 
-// записываем в переменные необходимые узлы DOM
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
@@ -15,60 +14,51 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
-let paintedComments;
+let paintComments;
 
-// функция обработки закрытия поста клавишей esc
-const onPostCloseButtonKeydown = (evt) => {
+const onPostCloseButtonKeydown = (evt) => { // обрабатывает закрытие поста клавишей esc
   if (isPressedKeyEscape(evt)) {
     evt.preventDefault();
     closePost();
   }
 };
 
-// функция обработки закрытия поста кнопкой крестиком
-const onPostCloseButtonClick = (evt) => {
+const onPostCloseButtonClick = (evt) => { // обрабатывает закрытие поста кнопкой крестиком
   evt.preventDefault();
   closePost();
 };
 
-// функция закрытия окна поста
-function closePost () {
+function closePost () { // закрывает окна поста
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPostCloseButtonKeydown);
   bigPictureCloseButton.removeEventListener('click', onPostCloseButtonClick);
   commentsList.innerHTML = '';
   commentsLoaderButton.classList.remove('hidden');
+}
+
+function switchOffCommentsLoaderButton () {
+  commentsLoaderButton.classList.add('hidden');
   commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
 }
 
-function hideCommentsLoaderButton (comments) { // функция проверки не пустой ли массив комментариев
-  if (comments.length === 0) {
-    commentsLoaderButton.classList.add('hidden');
-    return true;
-  }
+function onLoadMoreCommentsButton() { // обрабатывает клик по кнопке Загрузить еще
+  paintComments();
 }
 
-function onLoadMoreCommentsButton() { // функция-обработчик клика по кнопке Загрузить еще
-  commentsList.appendChild(paintedComments());
-}
-
-// функция отрисовывает комментарии
-const paintComments = (comments) => {
+const paintCommentsCreator = (comments) => { // отрисовывает комментарии
   const commentFragment = document.createDocumentFragment();
   const workVersionComments = structuredClone(comments);
-  let shownCommentsCount = 0; // переменная отражает число отображаемых комментариев
-
-  commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
+  let shownCommentsCount = 0;
 
   return () => {
-    if (workVersionComments.length < SHOWN_COMMENTS_PERIOD) {
+    if (workVersionComments.length < SHOWN_COMMENTS_COUNT) {
       shownCommentsCount += workVersionComments.length;
     } else {
-      shownCommentsCount += 5;
+      shownCommentsCount += SHOWN_COMMENTS_COUNT;
     }
 
-    const partComments = workVersionComments.splice(0, 5);
+    const partComments = workVersionComments.splice(0, SHOWN_COMMENTS_COUNT);
     commentsShownCount.textContent = shownCommentsCount;
 
     partComments.forEach(({avatar, message, name}) => {
@@ -78,26 +68,34 @@ const paintComments = (comments) => {
       commentPicture.alt = name;
       comment.querySelector('.social__text').textContent = message;
       commentFragment.appendChild(comment);
-      hideCommentsLoaderButton(workVersionComments);
     });
+
+    commentsList.appendChild(commentFragment);
+
+    if (isArrayEmpty(workVersionComments)) {
+      switchOffCommentsLoaderButton(workVersionComments);
+    }
+
     return commentFragment;
   };
 };
 
-// функция отрисовки поста при клике на миниатюре
-const onThumbnailClick = (post) => {
+const onThumbnailClick = (post) => { // отрисовывает пост при клике на миниатюре
   const {url, description, likes, comments} = post;
 
   bigPictureImage.src = url;
   postDescription.textContent = description;
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
+  commentsLoaderButton.classList.remove('hidden');
 
-  if (!hideCommentsLoaderButton(comments)) {
-    paintedComments = paintComments(comments);
-    commentsList.appendChild(paintedComments());
+  if (!isArrayEmpty(comments)) {
+    paintComments = paintCommentsCreator(comments);
+    paintComments();
+    commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
   } else {
     commentsShownCount.textContent = 0;
+    commentsLoaderButton.classList.add('hidden');
   }
 
   bigPicture.classList.remove('hidden');

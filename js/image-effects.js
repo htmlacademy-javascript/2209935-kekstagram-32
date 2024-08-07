@@ -1,8 +1,9 @@
-const imageUploadPopup = document.querySelector('.img-upload__overlay');
-const uploadedImagePreview = imageUploadPopup.querySelector('.img-upload__preview img');
-const imageEffectsSlider = imageUploadPopup.querySelector('.effect-level__slider');
-const imageEffectsContainer = imageUploadPopup.querySelector('.effects__list');
-const imageEffectValue = imageUploadPopup.querySelector('.effect-level__value');
+const imageUploadPopupElement = document.querySelector('.img-upload__overlay');
+const uploadedImagePreviewElement = imageUploadPopupElement.querySelector('.img-upload__preview img');
+const imageEffectsSliderContainerElement = imageUploadPopupElement.querySelector('.img-upload__effect-level');
+const imageEffectsSliderElement = imageUploadPopupElement.querySelector('.effect-level__slider');
+const imageEffectsContainerElement = imageUploadPopupElement.querySelector('.effects__list');
+const imageEffectValueElement = imageUploadPopupElement.querySelector('.effect-level__value');
 
 const effects = {
   'effect-chrome': {
@@ -69,7 +70,7 @@ const effects = {
 
 let currentSliderEffect = 'effect-none';
 
-const changeImageEffectSlider = noUiSlider.create(imageEffectsSlider, {
+const imageEffectsSlider = noUiSlider.create(imageEffectsSliderElement, {
   range: {
     min: 0,
     max: 1,
@@ -90,33 +91,31 @@ const changeImageEffectSlider = noUiSlider.create(imageEffectsSlider, {
   }
 });
 
-function onEffectItemClick (element) {
+const onEffectItemClick = (element) => { // обрабатывает клик по кнопке с выбором эффекта
   currentSliderEffect = element.getAttribute('id');
   if (currentSliderEffect === 'effect-none') {
-    imageEffectsSlider.classList.add('visually-hidden');
-    changeImageEffectSlider.reset();
-    uploadedImagePreview.style.removeProperty('filter');
+    imageEffectsSliderContainerElement.classList.add('visually-hidden');
+    imageEffectsSlider.reset();
+    uploadedImagePreviewElement.style.removeProperty('filter');
   } else {
-    imageEffectsSlider.classList.remove('visually-hidden');
-    changeImageEffectSlider.updateOptions(effects[currentSliderEffect].options);
+    imageEffectsSliderContainerElement.classList.remove('visually-hidden');
+    imageEffectsSlider.updateOptions(effects[currentSliderEffect].options);
   }
-}
+};
 
-function onChangeEffectSliderUpdate () {
-  const currentSliderValue = changeImageEffectSlider.get();
-  imageEffectValue.value = currentSliderValue;
-  if (currentSliderEffect !== 'effect-none') {
-    uploadedImagePreview.style.filter = `${effects[currentSliderEffect].filter}(${currentSliderValue}${effects[currentSliderEffect].unit})`;
-  }
-}
-
-imageEffectsContainer.addEventListener('click', (evt) => {
+imageEffectsContainerElement.addEventListener('click', (evt) => { // вешает обработчик на контейнер кнопок выбора эффектов
   const target = evt.target.closest('.effects__radio');
   if (target) {
     onEffectItemClick(target);
   }
 });
 
-changeImageEffectSlider.on('update', onChangeEffectSliderUpdate);
+imageEffectsSlider.on('update', () => { // обрабатывает обновление данных слайдера
+  const currentSliderValue = imageEffectsSlider.get();
+  imageEffectValueElement.value = currentSliderValue;
+  if (currentSliderEffect !== 'effect-none') {
+    uploadedImagePreviewElement.style.filter = `${effects[currentSliderEffect].filter}(${currentSliderValue}${effects[currentSliderEffect].unit})`;
+  }
+});
 
-export {changeImageEffectSlider};
+export {imageEffectsSlider};
