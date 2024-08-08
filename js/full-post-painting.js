@@ -37,11 +37,6 @@ function closePost () { // закрывает окна поста
   commentsLoaderButton.classList.remove('hidden');
 }
 
-function switchOffCommentsLoaderButton () {
-  commentsLoaderButton.classList.add('hidden');
-  commentsLoaderButton.removeEventListener('click', onLoadMoreCommentsButton);
-}
-
 function onLoadMoreCommentsButton() { // обрабатывает клик по кнопке Загрузить еще
   paintComments();
 }
@@ -73,7 +68,7 @@ const paintCommentsCreator = (comments) => { // отрисовывает ком�
     commentsList.appendChild(commentFragment);
 
     if (isArrayEmpty(workVersionComments)) {
-      switchOffCommentsLoaderButton(workVersionComments);
+      commentsLoaderButton.classList.add('hidden');
     }
   };
 };
@@ -90,7 +85,6 @@ const onThumbnailClick = (post) => { // отрисовывает пост при
   if (!isArrayEmpty(comments)) {
     paintComments = paintCommentsCreator(comments);
     paintComments();
-    commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
   } else {
     commentsShownCount.textContent = 0;
     commentsLoaderButton.classList.add('hidden');
@@ -103,5 +97,7 @@ const onThumbnailClick = (post) => { // отрисовывает пост при
 
   bigPictureCloseButton.addEventListener('click', onPostCloseButtonClick); // обрабочик закрытия окна по кнопке;
 };
+
+commentsLoaderButton.addEventListener('click', onLoadMoreCommentsButton); // обработчик дорисовки комментариев при клике на кнопку 'Загрузить еще'
 
 export {onThumbnailClick};
