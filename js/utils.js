@@ -1,5 +1,3 @@
-const picturesContainerElement = document.querySelector('.pictures');
-
 const getRandomInteger = (min, max) => { // генерирует случайное целое число из диапазона
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -28,11 +26,10 @@ const isPressedKeyEscape = (evt) => evt.key === 'Escape'; // проверяет 
 
 const isArrayEmpty = (array) => array.length === 0; // проверяет не пустой ли массив
 
-const debounce = (callback, timeoutDelay, event) => { // устраняет дребезг
+const debounce = (callback, timeoutDelay = 500) => { // устраняет дребезг
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
-    picturesContainerElement.removeEventListener('click', event);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };

@@ -1,8 +1,8 @@
 import { createRandomNumberFromRangeGenerator } from './utils.js';
 
-const filterContainerElement = document.querySelector('.img-filters');
-
 const RANDOM_POSTS_COUNT = 10;
+
+const filterContainerElement = document.querySelector('.img-filters');
 
 const filters = {
   'filter-default': (input) => input,

@@ -27,7 +27,7 @@ function removeLoadMessage(element) { // удаляет сообщение об 
   document.removeEventListener('keydown', onDocumentLoadMessageEscapeKeyDown);
 }
 
-const loadDataFromUserSucces = () => { // обрабатывает успешную загрузку данных пользователя
+const showMessageLoadDataFromUserSucces = () => { // обрабатывает успешную загрузку данных пользователя
   closeEditImagePopup();
   const loadSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessageTemplate = loadSuccessTemplate.cloneNode(true);
@@ -49,7 +49,7 @@ const loadDataFromUserSucces = () => { // обрабатывает успешн�
   });
 };
 
-const loadDataFromUserError = () => { // обрабатывает ошибку загрузки данных пользователя
+const showMessageLoadDataFromUserError = () => { // обрабатывает ошибку загрузки данных пользователя
   document.removeEventListener('keydown', onEditImagePopupCloseKeydown);
   const loadErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorMessageTemplate = loadErrorTemplate.cloneNode(true);
@@ -79,12 +79,12 @@ const onUserFormSubmit = (evt) => { // обрабатывает отправку
     submitButtonElement.disabled = true;
     const formData = new FormData(evt.target);
     sendData(formData)
-      .then(loadDataFromUserSucces)
-      .catch(loadDataFromUserError)
+      .then(showMessageLoadDataFromUserSucces)
+      .catch(showMessageLoadDataFromUserError)
       .finally(() => {
         submitButtonElement.disabled = false;
       });
   }
 };
 
-export {loadDataFromUserError, loadDataFromUserSucces, onUserFormSubmit};
+export {showMessageLoadDataFromUserError, onUserFormSubmit};
