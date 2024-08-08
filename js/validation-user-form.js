@@ -1,10 +1,10 @@
+const MAX_HASHTAGS_COUNT = 5;
+const MAX_COMMENTS_LENGTH = 140;
+const REG_EXP = /^#[a-zа-яё0-9]{1,19}$/;
+
 const uploadImageFormElement = document.querySelector('.img-upload__form');
 const hashtagInputElement = uploadImageFormElement.querySelector('.text__hashtags');
 const commentInputElement = uploadImageFormElement.querySelector('.text__description');
-
-const MAX_HASHTAGS_COUNT = 5;
-const MAX_COMMENTS_LENGTH = 140;
-const regExp = /^#[a-zа-яё0-9]{1,19}$/;
 
 const pristine = new Pristine(uploadImageFormElement, {
   classTo: 'img-upload__field-wrapper',
@@ -25,7 +25,7 @@ const createValidator = (type) => { // создает функцию-генер�
           return true;
         }
         for (let i = 0; i < hashtagsArray.length; i++) {
-          if (!regExp.test(hashtagsArray[i])) {
+          if (!REG_EXP.test(hashtagsArray[i])) {
             return false;
           }
         }

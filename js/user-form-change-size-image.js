@@ -1,8 +1,8 @@
+const CHANGE_IMAGE_SIZE_STEP = 25;
+
 const imageUploadPopupElement = document.querySelector('.img-upload__overlay');
 const changeImageSizeInput = imageUploadPopupElement.querySelector('.scale__control--value');
 const uploadedImagePreview = imageUploadPopupElement.querySelector('.img-upload__preview img');
-
-const CHANGE_IMAGE_SIZE_STEP = 25;
 
 const changeImageSize = (element) => { // изменяет зум картинки поста
   let imageSizeCurrentValue = parseInt(changeImageSizeInput.value, 10);

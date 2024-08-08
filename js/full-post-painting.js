@@ -75,8 +75,6 @@ const paintCommentsCreator = (comments) => { // отрисовывает ком�
     if (isArrayEmpty(workVersionComments)) {
       switchOffCommentsLoaderButton(workVersionComments);
     }
-
-    return commentFragment;
   };
 };
 

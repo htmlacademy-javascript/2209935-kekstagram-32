@@ -1,7 +1,7 @@
 import { pristine } from './validation-user-form.js';
 import {changeImageSize} from './user-form-change-size-image.js';
 import {imageEffectsSlider } from './image-effects.js';
-import { loadDataFromUserError, onUserFormSubmit} from './load-data-from-user.js';
+import { showMessageLoadDataFromUserError, onUserFormSubmit} from './load-data-from-user.js';
 import { isPressedKeyEscape} from './utils.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -38,7 +38,7 @@ const openEditImagePopup = () => { // открывает окно редакти
       item.style.backgroundImage = `url(${imageUrl})`;
     });
   } else {
-    return loadDataFromUserError();
+    return showMessageLoadDataFromUserError();
   }
 
   imageUploadPopupElement.classList.remove('hidden');
