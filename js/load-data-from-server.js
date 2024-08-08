@@ -9,8 +9,9 @@ const SHOW_ERROR_MESSAGE_TIME = 5000;
 
 const bodyElement = document.querySelector('body');
 const filterFormElement = document.querySelector('.img-filters');
-const currentButtonElement = filterFormElement.querySelector('.img-filters__button--active');
 const picturesContainerElement = document.querySelector('.pictures');
+
+let currentFilter = 'filter-default';
 
 
 const showMessageLoadDataFromServerError = () => { // обрабатывет ошибку загрузки данных с сервера
@@ -25,7 +26,7 @@ const showMessageLoadDataFromServerError = () => { // обрабатывет о�
 getData()
   .then((posts) => {
     filterFormElement.classList.remove('img-filters--inactive');
-    paintPosts(posts, currentButtonElement.getAttribute('id'));
+    paintPosts(posts, currentFilter);
     picturesContainerElement.addEventListener('click', (evt) => {
       const target = evt.target.closest('.picture');
       if (target) {
@@ -33,8 +34,11 @@ getData()
       }
     });
     onFilterClick(debounce((filter) => {
-      const filteredPosts = filterPosts (posts, filter);
-      paintPosts(filteredPosts, filter);
+      if (filter === 'filter-random' || filter !== currentFilter) {
+        const filteredPosts = filterPosts (posts, filter);
+        paintPosts(filteredPosts, filter);
+        currentFilter = filter;
+      }
     }, RERENDER_DELAY));
   })
   .catch(showMessageLoadDataFromServerError);
