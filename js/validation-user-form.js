@@ -49,6 +49,7 @@ const validateCommentInput = (value) => value.length < MAX_COMMENTS_LENGTH;
 const validatorCorrect = createValidator('correct'); // валидирует на корректность введеных хештегов
 const validatorOverCount = createValidator('overcount'); // валидирует на превышение количества введеных хештегов
 const validatorDuplicate = createValidator('duplicate'); // валидирует на повторение введеных хештегов
+
 pristine.addValidator(hashtagInputElement, validatorCorrect, 'Введен невалидный хештег');
 pristine.addValidator(hashtagInputElement, validatorOverCount, 'Превышено количество хештегов');
 pristine.addValidator(hashtagInputElement, validatorDuplicate, 'Хештеги повторяются');
