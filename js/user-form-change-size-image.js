@@ -1,11 +1,11 @@
 const CHANGE_IMAGE_SIZE_STEP = 25;
 
 const imageUploadPopupElement = document.querySelector('.img-upload__overlay');
-const changeImageSizeInput = imageUploadPopupElement.querySelector('.scale__control--value');
-const uploadedImagePreview = imageUploadPopupElement.querySelector('.img-upload__preview img');
+const changeImageSizeInputElement = imageUploadPopupElement.querySelector('.scale__control--value');
+const uploadedImagePreviewElement = imageUploadPopupElement.querySelector('.img-upload__preview img');
 
 const changeImageSize = (element) => { // изменяет зум картинки поста
-  let imageSizeCurrentValue = parseInt(changeImageSizeInput.value, 10);
+  let imageSizeCurrentValue = parseInt(changeImageSizeInputElement.value, 10);
   if (element.classList.contains('scale__control--smaller')) {
     if (imageSizeCurrentValue >= 50 && imageSizeCurrentValue <= 100) {
       imageSizeCurrentValue -= CHANGE_IMAGE_SIZE_STEP;
@@ -19,8 +19,8 @@ const changeImageSize = (element) => { // изменяет зум картинк
       return;
     }
   }
-  changeImageSizeInput.value = `${imageSizeCurrentValue}%`;
-  uploadedImagePreview.style.transform = `scale(${imageSizeCurrentValue / 100})`;
+  changeImageSizeInputElement.value = `${imageSizeCurrentValue}%`;
+  uploadedImagePreviewElement.style.transform = `scale(${imageSizeCurrentValue / 100})`;
 };
 
 export {changeImageSize};
