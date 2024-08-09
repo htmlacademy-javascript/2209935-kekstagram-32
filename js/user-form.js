@@ -17,7 +17,7 @@ const changeSizeButtonsContainerElement = imageUploadPopupElement.querySelector(
 const uploadedImagePreviewElement = imageUploadPopupElement.querySelector('.img-upload__preview img');
 const imageEffectsSliderContainerElement = imageUploadPopupElement.querySelector('.img-upload__effect-level');
 
-const onChangeImageSize = (evt) => { // обрабатывает клик по кнопкам зума картинки
+const onChangeImageSizeClick = (evt) => { // обрабатывает клик по кнопкам зума картинки
   const target = evt.target.closest('.scale__control');
   if (target) {
     changeImageSize(target);
@@ -47,7 +47,7 @@ const openEditImagePopup = () => { // открывает окно редакти
   document.addEventListener('keydown', onEditImagePopupCloseKeydown);
   uploadImageFormElement.addEventListener('submit', onUserFormSubmit);
   imageEffectsSliderContainerElement.classList.add('visually-hidden');
-  changeSizeButtonsContainerElement.addEventListener('click', onChangeImageSize);
+  changeSizeButtonsContainerElement.addEventListener('click', onChangeImageSizeClick);
 };
 
 const closeEditImagePopup = () => { // закрывает окно редактирования поста
@@ -60,7 +60,7 @@ const closeEditImagePopup = () => { // закрывает окно редакт�
   imageEffectsSlider.reset();
   uploadedImagePreviewElement.style.removeProperty('transform');
   uploadedImagePreviewElement.style.removeProperty('filter');
-  changeSizeButtonsContainerElement.removeEventListener('click', onChangeImageSize);
+  changeSizeButtonsContainerElement.removeEventListener('click', onChangeImageSizeClick);
 };
 
 function onEditImagePopupCloseKeydown (evt) { // обрабатывает нажатие esc на окне редактирвоания
